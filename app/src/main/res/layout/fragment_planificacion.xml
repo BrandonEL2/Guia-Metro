@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:text="Planifica tu ruta"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="#212121"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:text="Origen"
+            android:textStyle="bold"
+            android:textColor="#008A00"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Spinner
+            android:id="@+id/spLineaOrigen"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"/>
+
+        <Spinner
+            android:id="@+id/spEstacionOrigen"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:text="Destino"
+            android:textStyle="bold"
+            android:textColor="#E53935"
+            android:layout_marginTop="24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <Spinner
+            android:id="@+id/spLineaDestino"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"/>
+
+        <Spinner
+            android:id="@+id/spEstacionDestino"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"/>
+
+        <Button
+            android:id="@+id/btnBuscarRuta"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="32dp"
+            android:text="BUSCAR RUTA"
+            android:textAllCaps="true"
+            android:textSize="20sp"/>
+
+        <ProgressBar
+            android:id="@+id/progressBusqueda"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+</ScrollView>
