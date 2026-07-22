@@ -1,12 +1,11 @@
-package com.example.guiametro
-
+package com.example.guiametro.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.guiametro.model.Dijkstra
-import com.metroguia.model.GrafoMetro
-import com.metroguia.model.RutaResultado
+import com.example.guiametro.RutaResultado
+import com.example.guiametro.graph.Dijkstra
+import com.example.guiametro.graph.GrafoMetro
 
 class RutaViewModel : ViewModel() {
 

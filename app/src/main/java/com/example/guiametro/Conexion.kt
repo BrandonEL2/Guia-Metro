@@ -6,6 +6,6 @@ data class Conexion(
 
     val tiempo: Int,
 
-    val esTransbordo: Boolean = false
+    val transbordo: Boolean = false
 
 )

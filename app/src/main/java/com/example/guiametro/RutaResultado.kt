@@ -6,6 +6,8 @@ data class RutaResultado(
 
     val tiempoTotal: Int,
 
-    val numeroTransbordos: Int
+    val numeroTransbordos: Int,
+
+    val instrucciones: List<String>
 
 )

@@ -1,5 +1,8 @@
-package com.example.guiametro
+package com.example.guiametro.graph
 
+import com.example.guiametro.Estacion
+import com.example.guiametro.graph.GrafoMetro
+import com.example.guiametro.RutaResultado
 import java.util.PriorityQueue
 
 class Dijkstra(

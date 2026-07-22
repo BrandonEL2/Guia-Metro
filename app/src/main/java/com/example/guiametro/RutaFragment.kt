@@ -7,6 +7,26 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.guiametro.viewmodel.RutaViewModel
+import androidx.navigation.fragment.findNavController
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+
+private lateinit var spLineaOrigen: Spinner
+private lateinit var spEstacionOrigen: Spinner
+
+private lateinit var spLineaDestino: Spinner
+private lateinit var spEstacionDestino: Spinner
+
+data class RutaResultados(
+
+    val estaciones: List<Estacion>,
+
+    val tiempoTotal: Int,
+
+    val numeroTransbordos: Int
+
+)
 
 class RutaFragment : Fragment(R.layout.fragment_planificacion) {
 
@@ -59,8 +79,6 @@ class RutaFragment : Fragment(R.layout.fragment_planificacion) {
             if (it != null) {
 
                 val bundle = Bundle()
-
-                bundle.putParcelable("ruta", it)
 
                 findNavController().navigate(
                     R.id.action_planificacion_to_itinerario,

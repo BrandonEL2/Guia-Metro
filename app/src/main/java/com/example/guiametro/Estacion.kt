@@ -8,6 +8,8 @@ data class Estacion(
 
     val linea: String,
 
-    val salidas: List<String> = emptyList()
+    val salidas: List<String> = emptyList(),
+
+    val esTransbordo: Boolean = false
 
 )

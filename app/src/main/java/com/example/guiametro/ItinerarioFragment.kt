@@ -7,6 +7,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.guiametro.adapter.ItinerarioAdapter
 import java.time.LocalTime
 
 class ItinerarioFragment : Fragment(R.layout.fragment_itinerario) {
