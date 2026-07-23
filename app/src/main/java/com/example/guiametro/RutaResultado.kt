@@ -8,6 +8,6 @@ data class RutaResultado(
 
     val numeroTransbordos: Int,
 
-    val instrucciones: List<String>
+    val instrucciones: List<String> = emptyList()
 
 )

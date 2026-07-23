@@ -31,12 +31,6 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"/>
 
-        <Spinner
-            android:id="@+id/spEstacionOrigen"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"/>
-
         <TextView
             android:text="Destino"
             android:textStyle="bold"
@@ -48,13 +42,7 @@
         <Spinner
             android:id="@+id/spLineaDestino"
             android:layout_width="match_parent"
-            android:layout_height="48dp"/>
-
-        <Spinner
-            android:id="@+id/spEstacionDestino"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"/>
+            android:layout_height="48dp" />
 
         <Button
             android:id="@+id/btnBuscarRuta"

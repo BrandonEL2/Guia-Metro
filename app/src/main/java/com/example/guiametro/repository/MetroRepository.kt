@@ -1,6 +1,7 @@
 package com.example.guiametro.repository
 
 import com.example.guiametro.*
+import com.example.guiametro.graph.GrafoMetro
 
 class MetroRepository {
 
@@ -26,10 +27,10 @@ class MetroRepository {
         grafo.agregarEstacion(chapultepec)
         grafo.agregarEstacion(sevilla)
 
-        grafo.conectar(observatorio, tacubaya, 2)
-        grafo.conectar(tacubaya, juanacatlan, 2)
-        grafo.conectar(juanacatlan, chapultepec, 2)
-        grafo.conectar(chapultepec, sevilla, 2)
+        grafo.conectar(observatorio.id, tacubaya.id, 2)
+        grafo.conectar(tacubaya.id, juanacatlan.id, 2)
+        grafo.conectar(juanacatlan.id, chapultepec.id, 2)
+        grafo.conectar(chapultepec.id, sevilla.id, 2)
 
     }
 
