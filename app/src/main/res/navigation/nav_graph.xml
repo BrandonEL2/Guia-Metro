@@ -1,24 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
     app:startDestination="@id/rutaFragment">
 
+    <!-- Pantalla de Planificación / Ruta -->
     <fragment
         android:id="@+id/rutaFragment"
         android:name="com.example.guiametro.RutaFragment"
         android:label="Ruta">
-
         <action
             android:id="@+id/action_planificacion_to_itinerario"
-            app:destination="@id/itinerarioFragment"/>
-
+            app:destination="@id/itinerarioFragment" />
     </fragment>
 
+    <!-- Pantalla de Itinerario -->
     <fragment
         android:id="@+id/itinerarioFragment"
         android:name="com.example.guiametro.ItinerarioFragment"
-        android:label="Itinerario"/>
+        android:label="Itinerario" />
 
+    <!-- Pantalla de Estaciones -->
+    <fragment
+        android:id="@+id/estacionesFragment"
+        android:name="com.example.guiametro.EstacionesFragment"
+        android:label="Estaciones" />
+
+    <!-- Pantalla de Alertas -->
+    <fragment
+        android:id="@+id/alertasFragment"
+        android:name="com.example.guiametro.AlertasFragment"
+        android:label="Alertas" />
+    <fragment
+        android:id="@+id/detalleLineaFragment"
+        android:name="com.example.guiametro.DetalleLineaFragment"
+        android:label="Detalle de Línea" />
 </navigation>

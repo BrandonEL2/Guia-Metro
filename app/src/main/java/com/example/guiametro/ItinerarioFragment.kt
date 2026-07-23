@@ -1,51 +1,50 @@
 package com.example.guiametro
 
-import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.guiametro.adapter.ItinerarioAdapter
-import java.time.LocalTime
 
 class ItinerarioFragment : Fragment(R.layout.fragment_itinerario) {
+
+    private lateinit var txtTiempo: TextView
+    private lateinit var txtTransbordos: TextView
+    private lateinit var txtLlegada: TextView
+    private lateinit var rvItinerario: RecyclerView
+    private lateinit var btnNuevaRuta: Button
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val ruta: RutaResultado? =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                arguments?.getParcelable("ruta", RutaResultado::class.java)
-            } else {
-                @Suppress("DEPRECATION")
-                arguments?.getParcelable("ruta")
-            }
+        // 1. Vincular vistas con los IDs exactos de tu XML
+        txtTiempo = view.findViewById(R.id.txtTiempo)
+        txtTransbordos = view.findViewById(R.id.txtTransbordos)
+        txtLlegada = view.findViewById(R.id.txtLlegada)
+        rvItinerario = view.findViewById(R.id.rvItinerario)
+        btnNuevaRuta = view.findViewById(R.id.btnNuevaRuta)
 
-        ruta?.let {
+        // 2. Recuperar el objeto RutaResultado enviado desde el RutaFragment
+        val resultadoRuta = arguments?.getSerializable("rutaResultado") as? RutaResultado
 
-            view.findViewById<TextView>(R.id.txtTiempo).text =
-                "Tiempo estimado: ${it.tiempoTotal} min"
+        // 3. Pintar los datos en los TextViews si existen
+        if (resultadoRuta != null) {
+            txtTiempo.text = "Tiempo estimado: ${resultadoRuta.tiempoTotal} min"
+            txtTransbordos.text = "Transbordos: ${resultadoRuta.numeroTransbordos}"
 
-            view.findViewById<TextView>(R.id.txtTransbordos).text =
-                "Transbordos: ${it.numeroTransbordos}"
+            // Configurar el RecyclerView para mostrar las estaciones paso a paso
+            rvItinerario.layoutManager = LinearLayoutManager(requireContext())
+            // Asegúrate de pasar la lista de estaciones a tu adaptador existente (ItinerarioAdapter)
+            rvItinerario.adapter = ItinerarioAdapter(resultadoRuta.estaciones)
+        }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val llegada = LocalTime.now().plusMinutes(it.tiempoTotal.toLong())
-
-                view.findViewById<TextView>(R.id.txtLlegada).text =
-                    "Llegada: $llegada"
-            } else {
-                view.findViewById<TextView>(R.id.txtLlegada).text =
-                    "Hora de llegada no disponible"
-            }
-
-            val recycler = view.findViewById<RecyclerView>(R.id.rvItinerario)
-
-            recycler.layoutManager = LinearLayoutManager(requireContext())
-
-            recycler.adapter = ItinerarioAdapter(it.estaciones)
+        // 4. Configurar el botón de "Nueva búsqueda" para volver a la pantalla de planificación
+        btnNuevaRuta.setOnClickListener {
+            findNavController().popBackStack(R.id.rutaFragment, false)
         }
     }
 }

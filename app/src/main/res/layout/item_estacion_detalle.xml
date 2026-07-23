@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingVertical="8dp"
+    android:paddingHorizontal="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <!-- Círculo de la estación y línea de ruta -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="32dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp">
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="12dp"
+            android:background="#E65100"/>
+
+        <View
+            android:id="@+id/viewPuntoEstacion"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:background="@drawable/bg_punto_estacion"/>
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="12dp"
+            android:background="#E65100"/>
+    </LinearLayout>
+
+    <!-- Información de la estación y correspondencias -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/txtNombreEstacionDetalle"
+            android:text="OBSERVATORIO"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:textColor="@android:color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/txtCorrespondenciasDetalle"
+            android:text="Conexión: L12"
+            android:textSize="11sp"
+            android:textColor="#666666"
+            android:layout_marginTop="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</LinearLayout>

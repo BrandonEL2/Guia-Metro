@@ -25,6 +25,11 @@ class Dijkstra(
 
     ): RutaResultado? {
 
+        // Validar que ambas estaciones existan en el grafo para evitar NullPointerException
+        if (!grafo.obtenerEstaciones().containsKey(origen) || !grafo.obtenerEstaciones().containsKey(destino)) {
+            return null
+        }
+
         val distancias = mutableMapOf<Int, Int>()
 
         val anteriores = mutableMapOf<Int, Int?>()
