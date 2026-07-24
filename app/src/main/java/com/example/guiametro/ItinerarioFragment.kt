@@ -24,7 +24,7 @@ class ItinerarioFragment : Fragment(R.layout.fragment_itinerario) {
         // 1. Vincular vistas con los IDs exactos de tu XML
         txtTiempo = view.findViewById(R.id.txtTiempo)
         txtTransbordos = view.findViewById(R.id.txtTransbordos)
-        txtLlegada = view.findViewById(R.id.txtLlegada)
+
         rvItinerario = view.findViewById(R.id.rvItinerario)
         btnNuevaRuta = view.findViewById(R.id.btnNuevaRuta)
 

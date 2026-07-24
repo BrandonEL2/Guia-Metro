@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Barra inferior con los 4 botones integrados -->
+    <!-- Barra inferior con diseño de pestañas (Icono + Texto) -->
     <LinearLayout
         android:id="@+id/miBarraInferior"
         android:orientation="horizontal"
@@ -26,46 +26,114 @@
         android:background="?android:attr/windowBackground"
         android:elevation="8dp"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="56dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <Button
+        <!-- Pestaña Ruta -->
+        <LinearLayout
             android:id="@+id/btnTabRuta"
-            android:text="Ruta"
-            android:textSize="12sp"
+            android:orientation="vertical"
+            android:gravity="center"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            style="?attr/materialButtonOutlinedStyle"/>
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
 
-        <Button
-            android:id="@+id/btnTabItinerario"
-            android:text="Itinerario"
-            android:textSize="12sp"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            style="?attr/materialButtonOutlinedStyle"/>
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@android:drawable/ic_menu_directions"
+                app:tint="#2E7D32"/>
 
-        <Button
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ruta"
+                android:textSize="10sp"
+                android:textColor="#2E7D32"/>
+        </LinearLayout>
+
+        <!-- Pestaña Estaciones -->
+        <LinearLayout
             android:id="@+id/btnTabEstaciones"
-            android:text="Estaciones"
-            android:textSize="12sp"
+            android:orientation="vertical"
+            android:gravity="center"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            style="?attr/materialButtonOutlinedStyle"/>
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
 
-        <Button
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@android:drawable/ic_menu_mapmode"
+                app:tint="#666666"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Estaciones"
+                android:textSize="10sp"
+                android:textColor="#666666"/>
+        </LinearLayout>
+
+        <!-- Pestaña Alertas -->
+        <LinearLayout
             android:id="@+id/btnTabAlertas"
-            android:text="Alertas"
-            android:textSize="12sp"
+            android:orientation="vertical"
+            android:gravity="center"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            style="?attr/materialButtonOutlinedStyle"/>
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@android:drawable/ic_menu_info_details"
+                app:tint="#666666"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alertas"
+                android:textSize="10sp"
+                android:textColor="#666666"/>
+        </LinearLayout>
+
+        <!-- Pestaña Mapa -->
+        <LinearLayout
+            android:id="@+id/btnTabMapa"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@android:drawable/ic_dialog_map"
+                app:tint="#666666"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mapa"
+                android:textSize="10sp"
+                android:textColor="#666666"/>
+        </LinearLayout>
 
     </LinearLayout>
 

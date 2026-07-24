@@ -8,31 +8,42 @@
     <fragment
         android:id="@+id/rutaFragment"
         android:name="com.example.guiametro.RutaFragment"
-        android:label="Ruta">
+        android:label="Planificar Ruta">
         <action
             android:id="@+id/action_planificacion_to_itinerario"
             app:destination="@id/itinerarioFragment" />
     </fragment>
 
-    <!-- Pantalla de Itinerario -->
+    <!-- Pantalla de Resultados / Itinerario -->
     <fragment
         android:id="@+id/itinerarioFragment"
         android:name="com.example.guiametro.ItinerarioFragment"
         android:label="Itinerario" />
 
-    <!-- Pantalla de Estaciones -->
+    <!-- Pantalla de Estaciones y Líneas -->
     <fragment
         android:id="@+id/estacionesFragment"
         android:name="com.example.guiametro.EstacionesFragment"
-        android:label="Estaciones" />
+        android:label="Estaciones">
+        <action
+            android:id="@+id/action_estaciones_to_detalle"
+            app:destination="@id/detalleLineaFragment" />
+    </fragment>
+
+    <!-- Detalle de Línea y Estaciones -->
+    <fragment
+        android:id="@+id/detalleLineaFragment"
+        android:name="com.example.guiametro.DetalleLineaFragment"
+        android:label="Detalle de Línea" />
 
     <!-- Pantalla de Alertas -->
     <fragment
         android:id="@+id/alertasFragment"
         android:name="com.example.guiametro.AlertasFragment"
         android:label="Alertas" />
+    <!-- Pantalla de Mapa -->
     <fragment
-        android:id="@+id/detalleLineaFragment"
-        android:name="com.example.guiametro.DetalleLineaFragment"
-        android:label="Detalle de Línea" />
+        android:id="@+id/mapaFragment"
+        android:name="com.example.guiametro.MapaFragment"
+        android:label="Mapa" />
 </navigation>
