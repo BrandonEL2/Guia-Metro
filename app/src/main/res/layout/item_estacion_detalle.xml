@@ -24,7 +24,7 @@
             android:id="@+id/viewPuntoEstacion"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:background="@drawable/bg_punto_estacion"/>
+            android:background="@drawable/bg_punto_estacions"/>
 
         <View
             android:layout_width="4dp"

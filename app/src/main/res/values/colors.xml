@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Paleta Metro Moderno -->
+    <color name="colorPrimary">#2563EB</color>      <!-- Azul Urbano (Botones y acciones) -->
+    <color name="colorOrigen">#059669</color>       <!-- Verde Esmeralda suave -->
+    <color name="colorDestino">#DC2626</color>      <!-- Rojo Carmesí suave -->
+    <color name="fondoInputs">#F3F4F6</color>       <!-- Gris muy claro para tarjetas/desplegables -->
+    <color name="textoPrincipal">#1F2937</color>    <!-- Gris oscuro principal -->
+    <color name="bordeInput">#E5E7EB</color>        <!-- Borde sutil -->
+    <color name="fondo_pantalla">#F3F4F6</color>
+
 </resources>

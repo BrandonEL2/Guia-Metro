@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="oval">
+    <!-- Quitamos el solid fijo o ponemos un gris base -->
     <solid android:color="#E65100"/>
     <size
         android:width="20dp"
