@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Paso 1: Definimos una máscara ovalada general -->
+    <item>
+        <shape android:shape="oval">
+            <size android:width="20dp" android:height="20dp"/>
+            <!-- Este color no importa, pero es necesario para la máscara -->
+            <solid android:color="@android:color/transparent"/>
+        </shape>
+    </item>
+
+    <!-- Paso 2: Dentro de la máscara, colocamos las dos mitades -->
+    <item>
+        <selector>
+            <item>
+                <layer-list>
+                    <!-- Mitad Superior (Verde) -->
+                    <item android:gravity="top">
+                        <shape android:shape="rectangle">
+                            <solid android:color="@color/linea_b_verde"/>
+                            <size android:width="20dp" android:height="10dp"/>
+                            <!-- Esquinas redondeadas solo arriba -->
+                            <corners
+                                android:topLeftRadius="10dp"
+                                android:topRightRadius="10dp"/>
+                        </shape>
+                    </item>
+
+                    <!-- Mitad Inferior (Gris) -->
+                    <item android:gravity="bottom">
+                        <shape android:shape="rectangle">
+                            <solid android:color="@color/linea_b_gris"/>
+                            <size android:width="20dp" android:height="10dp"/>
+                            <!-- Esquinas redondeadas solo abajo -->
+                            <corners
+                                android:bottomLeftRadius="10dp"
+                                android:bottomRightRadius="10dp"/>
+                        </shape>
+                    </item>
+                </layer-list>
+            </item>
+        </selector>
+    </item>
+
+</layer-list>

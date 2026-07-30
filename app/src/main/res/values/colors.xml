@@ -8,5 +8,21 @@
     <color name="textoPrincipal">#1F2937</color>    <!-- Gris oscuro principal -->
     <color name="bordeInput">#E5E7EB</color>        <!-- Borde sutil -->
     <color name="fondo_pantalla">#F3F4F6</color>
+    <color name="linea_1">#FF7F00</color>
+    <color name="linea_2">#0047AB</color>
+    <color name="linea_3">#008000</color>
+    <color name="linea_4">#00A8B5</color>
+    <color name="linea_5">#FFD700</color>
+    <color name="linea_6">#FF0000</color>
+    <color name="linea_7">#FF6600</color>
+    <color name="linea_8">#008033</color>
+    <color name="linea_9">#7C3F00</color>
+    <color name="linea_12">#B8860B</color>
+    <color name="linea_a">#8A2BE2</color>
+    <color name="linea_b">#808080</color>
+    <color name="linea_default">#E65100</color>
+
+        <color name="linea_b_verde">#008033</color>
+        <color name="linea_b_gris">#808080</color>
 
 </resources>
