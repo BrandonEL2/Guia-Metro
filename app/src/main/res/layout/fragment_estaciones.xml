@@ -54,7 +54,7 @@
                         android:text="LÍNEA 1"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:background="#E65100"
+                        android:background="@color/linea_1"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
                         android:textSize="12sp"
@@ -90,7 +90,7 @@
                         android:text="LÍNEA 2"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:background="#0D47A1"
+                        android:background="@color/linea_2"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
                         android:textSize="12sp"
@@ -126,7 +126,7 @@
                         android:text="LÍNEA 3"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:background="#1B5E20"
+                        android:background="@color/linea_3"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
                         android:textSize="12sp"
@@ -162,7 +162,7 @@
                         android:text="LÍNEA 4"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:background="#880E4F"
+                        android:background="@color/linea_4"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
                         android:textSize="12sp"
@@ -197,8 +197,8 @@
                     <TextView
                         android:text="LÍNEA 5"
                         android:textStyle="bold"
-                        android:textColor="@android:color/black"
-                        android:background="#FBC02D"
+                        android:textColor="@android:color/white"
+                        android:background="@color/linea_5"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
                         android:textSize="12sp"
@@ -234,7 +234,7 @@
                         android:text="LÍNEA 6"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:background="#B71C1C"
+                        android:background="@color/linea_6"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
                         android:textSize="12sp"
@@ -270,7 +270,7 @@
                         android:text="LÍNEA 7"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:background="#EF6C00"
+                        android:background="@color/linea_7"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
                         android:textSize="12sp"
@@ -306,7 +306,7 @@
                         android:text="LÍNEA 8"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:background="#00695C"
+                        android:background="@color/linea_8"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
                         android:textSize="12sp"
@@ -342,7 +342,7 @@
                         android:text="LÍNEA 9"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:background="#5D4037"
+                        android:background="@color/linea_9"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
                         android:textSize="12sp"
@@ -377,8 +377,8 @@
                     <TextView
                         android:text="LÍNEA 12"
                         android:textStyle="bold"
-                        android:textColor="@android:color/black"
-                        android:background="#FFEE58"
+                        android:textColor="@android:color/white"
+                        android:background="@color/linea_12"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
                         android:textSize="12sp"
@@ -414,7 +414,7 @@
                         android:text="LÍNEA A"
                         android:textStyle="bold"
                         android:textColor="@android:color/white"
-                        android:background="#7B1FA2"
+                        android:background="@color/linea_a"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
                         android:textSize="12sp"
@@ -431,7 +431,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- Línea B -->
+           <!-- Línea B -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardLineaB"
                 android:layout_width="0dp"
@@ -446,17 +446,19 @@
                     android:padding="14dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <TextView
-                        android:text="LÍNEA B"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
-                        android:background="#424242"
-                        android:paddingHorizontal="10dp"
-                        android:paddingVertical="4dp"
-                        android:textSize="12sp"
-                        android:layout_marginBottom="8dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/bg_tarjeta_bicolor"
+                        android:paddingHorizontal="11dp"
+                        android:paddingVertical="5dp"
+                        android:text="LÍNEA B"
+                        android:textColor="@android:color/white"
+                        android:textSize="12sp"
+                        android:textStyle="bold" />
+
                     <TextView
                         android:text="Ciudad Azteca - Buenavista"
                         android:textSize="12sp"
