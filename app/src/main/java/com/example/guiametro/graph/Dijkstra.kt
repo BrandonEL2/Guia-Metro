@@ -1,100 +1,68 @@
 package com.example.guiametro.graph
 
-import com.example.guiametro.Estacion
-import com.example.guiametro.graph.GrafoMetro
-import com.example.guiametro.RutaResultado
-import java.util.PriorityQueue
+import com.example.guiametro.*
 
 class Dijkstra(
-
     private val grafo: GrafoMetro
-
 ) {
 
     companion object {
-
         private const val PENALIZACION_TRANSBORDO = 5
-
     }
 
     fun calcularRuta(
-
-        origen: Int,
-
-        destino: Int
-
+        origen: Estacion,
+        destino: Estacion
     ): RutaResultado? {
 
-        // Validar que ambas estaciones existan en el grafo para evitar NullPointerException
-        if (!grafo.obtenerEstaciones().containsKey(origen) || !grafo.obtenerEstaciones().containsKey(destino)) {
+        // Obtenemos el mapa de estaciones (ID -> Estacion)
+        val mapaEstaciones = grafo.obtenerEstaciones()
+
+        // Validar que ambas estaciones existan en el grafo
+        if (!mapaEstaciones.containsValue(origen) || !mapaEstaciones.containsValue(destino)) {
             return null
         }
 
-        val distancias = mutableMapOf<Int, Int>()
+        val distancias = mutableMapOf<Estacion, Int>()
+        val anteriores = mutableMapOf<Estacion, Estacion?>()
+        val visitados = mutableSetOf<Estacion>()
 
-        val anteriores = mutableMapOf<Int, Int?>()
-
-        val transbordos = mutableMapOf<Int, Int>()
-
-        val visitados = mutableSetOf<Int>()
-
-        grafo.obtenerEstaciones().keys.forEach {
-
-            distancias[it] = Int.MAX_VALUE
-
-            anteriores[it] = null
-
-            transbordos[it] = 0
+        // Inicializamos las distancias para cada estación del mapa
+        for (estacion in mapaEstaciones.values) {
+            distancias[estacion] = Int.MAX_VALUE
+            anteriores[estacion] = null
         }
 
         distancias[origen] = 0
 
-        val cola = PriorityQueue<Pair<Int, Int>>(
-            compareBy { it.second }
-        )
+        while (visitados.size < mapaEstaciones.size) {
 
-        cola.add(Pair(origen, 0))
-
-        while (cola.isNotEmpty()) {
-
-            val actual = cola.poll().first
-
-            if (visitados.contains(actual))
-                continue
-
-            visitados.add(actual)
+            val actual = distancias
+                .filter { !visitados.contains(it.key) }
+                .minByOrNull { it.value }
+                ?.key ?: break
 
             if (actual == destino)
                 break
 
-            for (conexion in grafo.vecinos(actual)) {
+            visitados.add(actual)
 
-                val vecino = conexion.destino.id
+            // Usamos el método 'vecinos' de tu GrafoMetro pasándole el ID de la estación
+            val conexiones = grafo.vecinos(actual.id)
 
-                var nuevoCosto =
-                    distancias[actual]!! + conexion.tiempo
+            for (conexion in conexiones) {
 
-                var cantidadTransbordos =
-                    transbordos[actual]!!
+                var peso = conexion.tiempo
 
-                if (conexion.esTransbordo) {
+            if (conexion.esTransbordo)
+                    peso += PENALIZACION_TRANSBORDO
 
-                    nuevoCosto += PENALIZACION_TRANSBORDO
+                val nuevaDistancia = distancias[actual]!! + peso
 
-                    cantidadTransbordos++
+                if (nuevaDistancia < (distancias[conexion.destino] ?: Int.MAX_VALUE)) {
 
-                }
-
-                if (nuevoCosto < distancias[vecino]!!) {
-
-                    distancias[vecino] = nuevoCosto
-
-                    anteriores[vecino] = actual
-
-                    transbordos[vecino] =
-                        cantidadTransbordos
-
-                    cola.add(Pair(vecino, nuevoCosto))
+                    distancias[conexion.destino] = nuevaDistancia
+                    anteriores[conexion.destino] = actual
 
                 }
 
@@ -102,36 +70,25 @@ class Dijkstra(
 
         }
 
-        if (distancias[destino] == Int.MAX_VALUE)
+        if (distancias[destino] == null || distancias[destino] == Int.MAX_VALUE)
             return null
 
         val ruta = mutableListOf<Estacion>()
-
-        var actual: Int? = destino
+        var actual: Estacion? = destino
 
         while (actual != null) {
-
-            ruta.add(
-                grafo.obtenerEstaciones()[actual]!!
-            )
-
+            ruta.add(0, actual)
             actual = anteriores[actual]
-
         }
 
-        ruta.reverse()
+        val transbordos = ruta.zipWithNext().count {
+            it.first.linea != it.second.linea
+        }
 
         return RutaResultado(
-
             estaciones = ruta,
-
             tiempoTotal = distancias[destino]!!,
-
-            numeroTransbordos =
-                transbordos[destino]!!
-
+            numeroTransbordos = transbordos
         )
-
     }
-
 }

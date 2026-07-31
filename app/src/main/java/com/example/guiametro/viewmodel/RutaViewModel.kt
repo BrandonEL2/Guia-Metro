@@ -31,9 +31,20 @@ class RutaViewModel : ViewModel() {
         _cargando.value = true
 
         try {
-            // Ahora le pasamos a Dijkstra el grafo que sí tiene las 195 estaciones
+            // Buscamos los objetos Estacion completos usando el ID dentro del grafo del repositorio
+            val estacionesMapa = grafo.obtenerEstaciones()
+            val estacionOrigen = estacionesMapa[origenId]
+            val estacionDestino = estacionesMapa[destinoId]
+
+            if (estacionOrigen == null || estacionDestino == null) {
+                _mensaje.value = "No se encontraron las estaciones seleccionadas."
+                _cargando.value = false
+                return
+            }
+
+            // Ahora sí le pasamos los objetos Estacion que el algoritmo requiere
             val algoritmoDijkstra = Dijkstra(grafo)
-            val resultado = algoritmoDijkstra.calcularRuta(origenId, destinoId)
+            val resultado = algoritmoDijkstra.calcularRuta(estacionOrigen, estacionDestino)
 
             if (resultado != null) {
                 _ruta.value = resultado
