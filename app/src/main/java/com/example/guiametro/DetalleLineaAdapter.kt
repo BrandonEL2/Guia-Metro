@@ -38,32 +38,42 @@ class DetalleLineaAdapter(private val listaEstaciones: List<Estacion>) :
             holder.txtCorrespondencia.visibility = View.GONE
         }
 
-        // 1. Mapear la línea con su respectivo recurso de color en colors.xml
-        val colorResId = when (estacion.linea.uppercase()) {
-            "L1" -> R.color.linea_1
-            "L2" -> R.color.linea_2
-            "L3" -> R.color.linea_3
-            "L4" -> R.color.linea_4
-            "L5" -> R.color.linea_5
-            "L6" -> R.color.linea_6
-            "L7" -> R.color.linea_7
-            "L8" -> R.color.linea_8
-            "L9" -> R.color.linea_9
-            "L12" -> R.color.linea_12
-            "LA" -> R.color.linea_a
-            "LB" -> R.color.linea_b
-            else -> R.color.linea_default
+        // Comprobamos si la estación pertenece a la Línea B
+        if (estacion.linea.uppercase() == "LB") {
+            // Aplicamos el diseño bicolor que creamos
+            holder.viewPuntoEstacion.setBackgroundResource(R.drawable.bg_punto_bicolor)
+
+            // Las líneas conectoras toman el color verde superior de referencia
+            val colorVerde = ContextCompat.getColor(holder.itemView.context, R.color.linea_b_verde)
+            holder.viewLineaArriba.setBackgroundColor(colorVerde)
+            holder.viewLineaAbajo.setBackgroundColor(colorVerde)
+        } else {
+            // Para el resto de las líneas normales
+            val colorResId = when (estacion.linea.uppercase()) {
+                "L1" -> R.color.linea_1
+                "L2" -> R.color.linea_2
+                "L3" -> R.color.linea_3
+                "L4" -> R.color.linea_4
+                "L5" -> R.color.linea_5
+                "L6" -> R.color.linea_6
+                "L7" -> R.color.linea_7
+                "L8" -> R.color.linea_8
+                "L9" -> R.color.linea_9
+                "L12" -> R.color.linea_12
+                "LA" -> R.color.linea_a
+                else -> R.color.linea_default
+            }
+
+            val colorInt = ContextCompat.getColor(holder.itemView.context, colorResId)
+
+            // Restauramos el fondo base ovalado para las líneas de un solo color
+            holder.viewPuntoEstacion.setBackgroundResource(R.drawable.bg_punto_estacions)
+            val drawablePunto = holder.viewPuntoEstacion.background as? GradientDrawable
+            drawablePunto?.setColor(colorInt)
+
+            holder.viewLineaArriba.setBackgroundColor(colorInt)
+            holder.viewLineaAbajo.setBackgroundColor(colorInt)
         }
-
-        // 2. Obtener el color real en formato entero de manera segura
-        val colorInt = ContextCompat.getColor(holder.itemView.context, colorResId)
-
-        // 3. Aplicar el color al círculo y a las líneas conectoras
-        val drawablePunto = holder.viewPuntoEstacion.background as? GradientDrawable
-        drawablePunto?.setColor(colorInt)
-
-        holder.viewLineaArriba.setBackgroundColor(colorInt)
-        holder.viewLineaAbajo.setBackgroundColor(colorInt)
     }
 
     override fun getItemCount(): Int = listaEstaciones.size
