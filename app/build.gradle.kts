@@ -46,7 +46,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.junit)
     implementation("com.davemorrissey.labs:subsampling-scale-image-view-androidx:3.10.0")
-
+    implementation("org.jsoup:jsoup:1.17.2")
     implementation("com.google.firebase:firebase-firestore")
     implementation(platform("com.google.firebase:firebase-bom:34.17.0"))
 }

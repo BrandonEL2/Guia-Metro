@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-
+import android.graphics.Color
 class AlertasAdapter(private val listaAlertas: List<AlertaLinea>) :
     RecyclerView.Adapter<AlertasAdapter.ViewHolder>() {
 
@@ -30,10 +30,16 @@ class AlertasAdapter(private val listaAlertas: List<AlertaLinea>) :
         holder.txtEstado.text = alerta.estado.uppercase()
         holder.txtAfectadas.text = "ESTACIONES AFECTADAS: ${alerta.estacionesAfectadas}"
 
-        // Aplica tanto R.color como R.drawable de forma segura
+        // Color dinámico según la gravedad del estado
+        val colorEstado = when {
+            alerta.estado.contains("REGULAR", ignoreCase = true) -> Color.parseColor("#23822F") // Verde
+            alerta.estado.contains("LENTA", ignoreCase = true) -> Color.parseColor("#D97706")   // Naranja
+            else -> Color.parseColor("#B50B0B")                                                  // Rojo
+        }
+        holder.txtEstado.setTextColor(colorEstado)
+
         holder.contenedorColor.setBackgroundResource(alerta.fondoRes)
 
-        // Extrae el número o letra limpio
         val numeroExtraido = alerta.nombre
             .replace(Regex("(?i)línea|linea"), "")
             .trim()
