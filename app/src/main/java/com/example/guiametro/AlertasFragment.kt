@@ -1,14 +1,15 @@
 package com.example.guiametro
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.AnyRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
-import android.util.Log
 
 class AlertasFragment : Fragment() {
 
@@ -32,41 +33,77 @@ class AlertasFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerAlertas)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        // 1. Cargar lista base local para que siempre se muestren las líneas
+        cargarListaBaseEstetica()
+
         alertasAdapter = AlertasAdapter(listaAlertas)
         recyclerView.adapter = alertasAdapter
 
-        escucharEstadoMetroEnTiempoReal()
+        // 2. Sincronizar desde Firebase
+        sincronizarEstadosFirebase()
     }
 
-    private fun escucharEstadoMetroEnTiempoReal() {
+    private fun cargarListaBaseEstetica() {
+        listaAlertas.clear()
+        val lineasNombres = listOf(
+            "Línea 1", "Línea 2", "Línea 3", "Línea 4",
+            "Línea 5", "Línea 6", "Línea 7", "Línea 8",
+            "Línea 9", "Línea 12", "Línea A", "Línea B"
+        )
+
+        for (nombre in lineasNombres) {
+            listaAlertas.add(
+                AlertaLinea(
+                    nombre = nombre,
+                    estado = "SERVICIO REGULAR",
+                    estacionesAfectadas = "Ninguna",
+                    fondoRes = obtenerFondoPorLinea(nombre)
+                )
+            )
+        }
+    }
+
+    @AnyRes
+    private fun obtenerFondoPorLinea(nombre: String): Int {
+        return when {
+            nombre.contains("12", ignoreCase = true) -> R.color.linea_12
+            nombre.contains("1", ignoreCase = true) -> R.color.linea_1
+            nombre.contains("2", ignoreCase = true) -> R.color.linea_2
+            nombre.contains("3", ignoreCase = true) -> R.color.linea_3
+            nombre.contains("4", ignoreCase = true) -> R.color.linea_4
+            nombre.contains("5", ignoreCase = true) -> R.color.linea_5
+            nombre.contains("6", ignoreCase = true) -> R.color.linea_6
+            nombre.contains("7", ignoreCase = true) -> R.color.linea_7
+            nombre.contains("8", ignoreCase = true) -> R.color.linea_8
+            nombre.contains("9", ignoreCase = true) -> R.color.linea_9
+            nombre.contains("A", ignoreCase = true) -> R.color.linea_a
+            nombre.contains("B", ignoreCase = true) -> R.drawable.bg_tarjeta_bicolor
+            else -> R.color.linea_default
+        }
+    }
+
+    private fun sincronizarEstadosFirebase() {
         db.collection("estado_lineas")
-            .addSnapshotListener { snapshots, e ->
-                if (e != null) {
-                    Log.e("FIRESTORE_ERROR", "Error al escuchar datos: ${e.message}")
-                    return@addSnapshotListener
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val nombreFirebase = document.getString("nombre") ?: continue
+                    val estadoFirebase = document.getString("estado") ?: "SERVICIO REGULAR"
+                    val afectadasFirebase = document.getString("estacionesAfectadas") ?: "Ninguna"
+
+                    val itemEncontrado = listaAlertas.find { it.nombre.equals(nombreFirebase, ignoreCase = true) }
+                    if (itemEncontrado != null) {
+                        itemEncontrado.estado = estadoFirebase
+                        itemEncontrado.estacionesAfectadas = afectadasFirebase
+                    }
                 }
 
-                if (snapshots != null) {
-                    listaAlertas.clear()
-                    Log.d("FIRESTORE_DATA", "Documentos encontrados: ${snapshots.documents.size}")
-
-                    for (document in snapshots.documents) {
-                        val alerta = document.toObject(AlertaLinea::class.java)
-                        if (alerta != null) {
-                            listaAlertas.add(alerta)
-                            Log.d("FIRESTORE_DATA", "Línea cargada: ${alerta.nombre}")
-                        } else {
-                            Log.w("FIRESTORE_DATA", "No se pudo mapear el documento: ${document.id}")
-                        }
-                    }
-
-                    // Actualizamos el adaptador de forma segura en el hilo principal
-                    activity?.runOnUiThread {
-                        alertasAdapter.actualizarDatos(listaAlertas)
-                    }
-                } else {
-                    Log.d("FIRESTORE_DATA", "El snapshot está vacío")
+                activity?.runOnUiThread {
+                    alertasAdapter.notifyDataSetChanged()
                 }
+            }
+            .addOnFailureListener { e ->
+                Log.e("FIRESTORE_ERROR", "Error al sincronizar: ${e.message}")
             }
     }
 }

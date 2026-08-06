@@ -1,49 +1,45 @@
 package com.example.guiametro
 
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class AlertasAdapter(private val listaAlertas: MutableList<AlertaLinea>) :
-    RecyclerView.Adapter<AlertasAdapter.AlertaViewHolder>() {
+class AlertasAdapter(private val listaAlertas: List<AlertaLinea>) :
+    RecyclerView.Adapter<AlertasAdapter.ViewHolder>() {
 
-    class AlertaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val txtNombreLinea: TextView = itemView.findViewById(R.id.txtNombreLinea)
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val txtNombre: TextView = itemView.findViewById(R.id.txtNombreLinea)
         val txtEstado: TextView = itemView.findViewById(R.id.txtEstado)
-        val txtEstacionesAfectadas: TextView = itemView.findViewById(R.id.txtEstacionesAfectadas)
-        val viewIndicadorColor: View = itemView.findViewById(R.id.viewIndicadorColor)
+        val txtAfectadas: TextView = itemView.findViewById(R.id.txtEstacionesAfectadas)
+        val contenedorColor: View = itemView.findViewById(R.id.contenedorCuadroLinea)
+        val txtNumeroLinea: TextView = itemView.findViewById(R.id.txtNumeroLinea)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AlertaViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_alerta_linea, parent, false)
-        return AlertaViewHolder(view)
+        return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: AlertaViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val alerta = listaAlertas[position]
 
-        holder.txtNombreLinea.text = alerta.nombre
-        holder.txtEstado.text = alerta.estado
-        holder.txtEstacionesAfectadas.text = "ESTACIONES AFECTADAS: ${alerta.estacionesAfectadas}"
+        holder.txtNombre.text = alerta.nombre.uppercase()
+        holder.txtEstado.text = alerta.estado.uppercase()
+        holder.txtAfectadas.text = "ESTACIONES AFECTADAS: ${alerta.estacionesAfectadas}"
 
-        try {
-            if (alerta.colorHex.isNotEmpty()) {
-                holder.viewIndicadorColor.setBackgroundColor(Color.parseColor(alerta.colorHex))
-            }
-        } catch (e: Exception) {
-            // Manejo de error de color si llegara a fallar
-        }
+        // Aplica tanto R.color como R.drawable de forma segura
+        holder.contenedorColor.setBackgroundResource(alerta.fondoRes)
+
+        // Extrae el número o letra limpio
+        val numeroExtraido = alerta.nombre
+            .replace(Regex("(?i)línea|linea"), "")
+            .trim()
+
+        holder.txtNumeroLinea.text = numeroExtraido
     }
 
     override fun getItemCount(): Int = listaAlertas.size
-
-    fun actualizarDatos(nuevaLista: List<AlertaLinea>) {
-        listaAlertas.clear()
-        listaAlertas.addAll(nuevaLista)
-        notifyDataSetChanged() // <-- Esto fuerza a que se pinte la tarjeta
-    }
 }
