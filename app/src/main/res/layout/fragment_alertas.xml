@@ -25,7 +25,7 @@
         android:textColor="#FFFFFF"
         android:textSize="15sp"
         android:textStyle="bold"
-        app:backgroundTint="#262626"
+        app:backgroundTint="#1976D2"
         app:cornerRadius="4dp" />
 
 </LinearLayout>

@@ -1,39 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Mapa Interactivo de las Líneas del Metro CDMX"
-            android:textStyle="bold"
-            android:textSize="20sp"
             android:textColor="@android:color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <TextView
-            android:text="Consulta rutas, estaciones y conexiones de cada línea."
-            android:textSize="13sp"
-            android:textColor="#666666"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="16dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="12dp"
+            android:text="Consulta rutas, estaciones y conexiones de cada línea."
+            android:textColor="#666666"
+            android:textSize="13sp" />
 
-        <!-- Cuadrícula (GridLayout) para todas las líneas -->
-        <GridLayout
+        <!-- Barra de búsqueda -->
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchViewEstaciones"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="2"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/bg_icono_linea2"
+            android:backgroundTint="#EAEAEA"
+            app:iconifiedByDefault="false"
+            app:queryHint="Buscar estación (ej. Bellas Artes)..." />
+
+        <!-- Lista para mostrar los resultados de búsqueda -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvResultadosBusqueda"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone" />
+
+        <!-- Cuadrícula (GridLayout) de Líneas -->
+        <GridLayout
+            android:id="@+id/gridLineas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:alignmentMode="alignMargins"
-            android:columnOrderPreserved="false"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
+            android:columnCount="2"
+            android:columnOrderPreserved="false">
 
             <!-- Línea 1 -->
             <androidx.cardview.widget.CardView
@@ -45,29 +65,29 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="14dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
                     <TextView
-                        android:text="LÍNEA 1"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:background="@color/linea_1"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
+                        android:text="LÍNEA 1"
+                        android:textColor="@android:color/white"
                         android:textSize="12sp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textStyle="bold" />
                     <TextView
-                        android:text="Observatorio - Pantitlán"
-                        android:textSize="12sp"
-                        android:textColor="#555555"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Observatorio - Pantitlán"
+                        android:textColor="#555555"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -81,29 +101,29 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="14dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
                     <TextView
-                        android:text="LÍNEA 2"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:background="@color/linea_2"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
+                        android:text="LÍNEA 2"
+                        android:textColor="@android:color/white"
                         android:textSize="12sp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textStyle="bold" />
                     <TextView
-                        android:text="Cuatro Caminos - Tasqueña"
-                        android:textSize="12sp"
-                        android:textColor="#555555"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Cuatro Caminos - Tasqueña"
+                        android:textColor="#555555"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -117,29 +137,29 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="14dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
                     <TextView
-                        android:text="LÍNEA 3"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:background="@color/linea_3"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
+                        android:text="LÍNEA 3"
+                        android:textColor="@android:color/white"
                         android:textSize="12sp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textStyle="bold" />
                     <TextView
-                        android:text="Indios Verdes - Universidad"
-                        android:textSize="12sp"
-                        android:textColor="#555555"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Indios Verdes - Universidad"
+                        android:textColor="#555555"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -153,29 +173,29 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="14dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
                     <TextView
-                        android:text="LÍNEA 4"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:background="@color/linea_4"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
+                        android:text="LÍNEA 4"
+                        android:textColor="@android:color/white"
                         android:textSize="12sp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textStyle="bold" />
                     <TextView
-                        android:text="Santa Anita - Martín Carrera"
-                        android:textSize="12sp"
-                        android:textColor="#555555"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Santa Anita - Martín Carrera"
+                        android:textColor="#555555"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -189,29 +209,29 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="14dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
                     <TextView
-                        android:text="LÍNEA 5"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:background="@color/linea_5"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
+                        android:text="LÍNEA 5"
+                        android:textColor="@android:color/white"
                         android:textSize="12sp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textStyle="bold" />
                     <TextView
-                        android:text="Pantitlán - Politécnico"
-                        android:textSize="12sp"
-                        android:textColor="#555555"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Pantitlán - Politécnico"
+                        android:textColor="#555555"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -225,29 +245,29 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="14dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
                     <TextView
-                        android:text="LÍNEA 6"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:background="@color/linea_6"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
+                        android:text="LÍNEA 6"
+                        android:textColor="@android:color/white"
                         android:textSize="12sp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textStyle="bold" />
                     <TextView
-                        android:text="El Rosario - Martín Carrera"
-                        android:textSize="12sp"
-                        android:textColor="#555555"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="El Rosario - Martín Carrera"
+                        android:textColor="#555555"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -261,29 +281,29 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="14dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
                     <TextView
-                        android:text="LÍNEA 7"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:background="@color/linea_7"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
+                        android:text="LÍNEA 7"
+                        android:textColor="@android:color/white"
                         android:textSize="12sp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textStyle="bold" />
                     <TextView
-                        android:text="El Rosario - Barranca del Muerto"
-                        android:textSize="12sp"
-                        android:textColor="#555555"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="El Rosario - Barranca del Muerto"
+                        android:textColor="#555555"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -297,29 +317,29 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="14dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
                     <TextView
-                        android:text="LÍNEA 8"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:background="@color/linea_8"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
+                        android:text="LÍNEA 8"
+                        android:textColor="@android:color/white"
                         android:textSize="12sp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textStyle="bold" />
                     <TextView
-                        android:text="Garibaldi - Constitución de 1917"
-                        android:textSize="12sp"
-                        android:textColor="#555555"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Garibaldi - Constitución de 1917"
+                        android:textColor="#555555"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -333,29 +353,29 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="14dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
                     <TextView
-                        android:text="LÍNEA 9"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:background="@color/linea_9"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
+                        android:text="LÍNEA 9"
+                        android:textColor="@android:color/white"
                         android:textSize="12sp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textStyle="bold" />
                     <TextView
-                        android:text="Tacubaya - Pantitlán"
-                        android:textSize="12sp"
-                        android:textColor="#555555"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Tacubaya - Pantitlán"
+                        android:textColor="#555555"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -369,29 +389,29 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="14dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
                     <TextView
-                        android:text="LÍNEA 12"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:background="@color/linea_12"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
+                        android:text="LÍNEA 12"
+                        android:textColor="@android:color/white"
                         android:textSize="12sp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textStyle="bold" />
                     <TextView
-                        android:text="Mixcoac - Tláhuac"
-                        android:textSize="12sp"
-                        android:textColor="#555555"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Mixcoac - Tláhuac"
+                        android:textColor="#555555"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -405,33 +425,33 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="14dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
                     <TextView
-                        android:text="LÍNEA A"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/white"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:background="@color/linea_a"
                         android:paddingHorizontal="10dp"
                         android:paddingVertical="4dp"
+                        android:text="LÍNEA A"
+                        android:textColor="@android:color/white"
                         android:textSize="12sp"
-                        android:layout_marginBottom="8dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textStyle="bold" />
                     <TextView
-                        android:text="Pantitlán - La Paz"
-                        android:textSize="12sp"
-                        android:textColor="#555555"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Pantitlán - La Paz"
+                        android:textColor="#555555"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-           <!-- Línea B -->
+            <!-- Línea B -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardLineaB"
                 android:layout_width="0dp"
@@ -441,12 +461,11 @@
                 app:cardCornerRadius="12dp"
                 app:cardElevation="2dp">
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:padding="14dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:padding="14dp">
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -458,14 +477,13 @@
                         android:textColor="@android:color/white"
                         android:textSize="12sp"
                         android:textStyle="bold" />
-
                     <TextView
-                        android:text="Ciudad Azteca - Buenavista"
-                        android:textSize="12sp"
-                        android:textColor="#555555"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Ciudad Azteca - Buenavista"
+                        android:textColor="#555555"
+                        android:textSize="12sp" />
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
