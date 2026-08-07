@@ -50,7 +50,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="LÍNEA 1" />
 
-        <!-- Estado del servicio (Ej. SERVICIO REGULAR o AVANCE LENTO) -->
+        <!-- Estado del servicio -->
         <TextView
             android:id="@+id/txtEstado"
             android:layout_width="0dp"
@@ -60,10 +60,20 @@
             android:textColor="#00C853"
             android:textSize="13sp"
             android:textStyle="bold"
+            android:maxLines="6"
+            android:singleLine="false"
             app:layout_constraintTop_toBottomOf="@id/txtNombreLinea"
             app:layout_constraintStart_toEndOf="@id/contenedorCuadroLinea"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:text="SERVICIO REGULAR" />
+            tools:text="AVANCE LENTO POR RETIRO DE TREN\nAVANCE LENTO POR LLUVIA" />
+
+        <!-- Barrera dinámica para empujar el texto inferior independientemente de qué elemento crezca -->
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrierHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="contenedorCuadroLinea,txtEstado" />
 
         <!-- Estaciones afectadas -->
         <TextView
@@ -74,7 +84,7 @@
             android:textColor="#F2EBEB"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@id/contenedorCuadroLinea"
+            app:layout_constraintTop_toBottomOf="@id/barrierHeader"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

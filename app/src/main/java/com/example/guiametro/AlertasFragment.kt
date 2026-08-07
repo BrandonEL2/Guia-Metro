@@ -91,89 +91,125 @@ class AlertasFragment : Fragment() {
         }
     }
 
+
     private suspend fun consultarEstadoOficialMetro() {
         try {
-            Log.d("SCRAPING_DEBUG", "Iniciando escaneo de la página principal e iframes...")
-
+            Log.d("SCRAPING_DEBUG", "Iniciando escaneo multi-alerta...")
             val urlPrincipal = "https://www.metro.cdmx.gob.mx/la-red/estado-del-servicio"
-            val documentosCargados = mutableListOf<org.jsoup.nodes.Document>()
-            val urlsVisitadas = mutableSetOf<String>()
 
-            fun cargarDocumentoEIframes(url: String) {
-                if (urlsVisitadas.contains(url)) return
-                urlsVisitadas.add(url)
+            // 1. Obtener la página contenedora y la URL del iframe
+            val docPrincipal = Jsoup.connect(urlPrincipal)
+                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
+                .timeout(15000)
+                .get()
 
+            val urlIframe = docPrincipal.select("iframe").firstOrNull()?.attr("abs:src") ?: urlPrincipal
+
+            // 2. Cargar Página 1 (contiene filas 1 a 10)
+            val responsePag1 = Jsoup.connect(urlIframe)
+                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
+                .timeout(15000)
+                .execute()
+
+            val docIframe1 = responsePag1.parse()
+            val cookiesSesion = responsePag1.cookies()
+            val viewState = docIframe1.select("input[name$=ViewState]").`val`() ?: ""
+
+            // 3. Obtener Página 2 mediante POST AJAX (contiene filas 11 en adelante)
+            val filasPagina2 = mutableListOf<org.jsoup.nodes.Element>()
+            if (viewState.isNotEmpty()) {
                 try {
-                    val doc = Jsoup.connect(url)
-                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
+                    val responseXml = Jsoup.connect(urlIframe)
+                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
                         .timeout(15000)
-                        .get()
+                        .cookies(cookiesSesion)
+                        .header("Faces-Request", "partial/ajax")
+                        .header("X-Requested-With", "XMLHttpRequest")
+                        .parser(org.jsoup.parser.Parser.xmlParser())
+                        .data("jakarta.faces.partial.ajax", "true")
+                        .data("jakarta.faces.source", "frmEstadoServicio:tblEstadoServicio")
+                        .data("jakarta.faces.partial.execute", "frmEstadoServicio:tblEstadoServicio")
+                        .data("jakarta.faces.partial.render", "frmEstadoServicio:tblEstadoServicio")
+                        .data("frmEstadoServicio:tblEstadoServicio", "frmEstadoServicio:tblEstadoServicio")
+                        .data("frmEstadoServicio:tblEstadoServicio_pagination", "true")
+                        .data("frmEstadoServicio:tblEstadoServicio_first", "10")
+                        .data("frmEstadoServicio:tblEstadoServicio_rows", "10")
+                        .data("frmEstadoServicio:tblEstadoServicio_skipChildren", "true")
+                        .data("frmEstadoServicio:tblEstadoServicio_encodeFeature", "true")
+                        .data("frmEstadoServicio", "frmEstadoServicio")
+                        .data("frmEstadoServicio:tblEstadoServicio_columnOrder", "frmEstadoServicio:tblEstadoServicio:j_idt29,frmEstadoServicio:tblEstadoServicio:j_idt30,frmEstadoServicio:tblEstadoServicio:j_idt32,frmEstadoServicio:tblEstadoServicio:j_idt34")
+                        .data("jakarta.faces.ViewState", viewState)
+                        .post()
 
-                    documentosCargados.add(doc)
+                    val xmlDoc = Jsoup.parse(responseXml.html(), "", org.jsoup.parser.Parser.xmlParser())
+                    val cdataHtml = xmlDoc.select("update").firstOrNull { it.attr("id").contains("tblEstadoServicio") }?.text()
+                        ?: xmlDoc.select("update").firstOrNull()?.text() ?: ""
 
-                    val iframes = doc.select("iframe")
-                    for (iframe in iframes) {
-                        var src = iframe.attr("src")
-                        if (src.isNotEmpty()) {
-                            if (!src.startsWith("http")) {
-                                src = if (src.startsWith("/")) "https://www.metro.cdmx.gob.mx$src" else "https://www.metro.cdmx.gob.mx/$src"
-                            }
-                            cargarDocumentoEIframes(src)
-                        }
+                    if (cdataHtml.isNotEmpty()) {
+                        val docPag2 = Jsoup.parse(cdataHtml)
+                        filasPagina2.addAll(docPag2.select("tr"))
                     }
                 } catch (e: Exception) {
-                    Log.e("SCRAPING_DEBUG", "Error cargando URL ($url): ${e.message}")
+                    Log.e("SCRAPING_DEBUG", "Error obteniendo Página 2: ${e.message}")
                 }
             }
 
-            cargarDocumentoEIframes(urlPrincipal)
-
-            val todasLasFilas = documentosCargados.flatMap { it.select("tr") }
-            Log.d("SCRAPING_DEBUG", "Documentos procesados: ${documentosCargados.size} | Filas totales: ${todasLasFilas.size}")
-
+            // 4. Procesar la unión de filas de ambas páginas
+            val todasLasFilas = docIframe1.select("tr") + filasPagina2
             var huboCambios = false
             val lineasFaltantes = mutableListOf<AlertaLinea>()
 
             for (alerta in listaAlertas) {
                 val idLinea = alerta.nombre.replace(Regex("(?i)línea|linea"), "").trim().lowercase()
-                var encontrada = false
+                val estadosEncontrados = mutableListOf<String>()
+                val afectadasEncontradas = mutableListOf<String>()
 
                 for (fila in todasLasFilas) {
-                    if (fila.select("th").isNotEmpty()) continue
-
                     val celdas = fila.select("td")
                     if (celdas.size >= 2) {
-                        val celda0 = celdas[0]
-                        val htmlCelda0 = celda0.outerHtml().lowercase()
-                        val textoCelda0 = celda0.text().trim().lowercase()
-
+                        val htmlCelda0 = celdas[0].outerHtml().lowercase()
+                        val textoCelda0 = celdas[0].text().trim().lowercase()
                         val estadoTexto = celdas[1].text().trim()
-                        val afectadasTexto = if (celdas.size >= 3) celdas[2].text().trim() else "Ninguna"
+                        val afectadasTexto = if (celdas.size >= 3) celdas[2].text().trim() else ""
+                        val infoAdicional = if (celdas.size >= 4) celdas[3].text().trim() else ""
 
                         if (estadoTexto.isEmpty() || estadoTexto.contains("estado", ignoreCase = true)) continue
 
+                        // Detección agnóstica a la extensión (.png, .svg, .xhtml) o guiones
                         val coincide = when (idLinea) {
-                            "a" -> textoCelda0 == "a" || htmlCelda0.contains("/la.") || htmlCelda0.contains("linea_a")
-                            "b" -> textoCelda0 == "b" || htmlCelda0.contains("/lb.") || htmlCelda0.contains("linea_b")
-                            "12" -> textoCelda0.contains("12") || htmlCelda0.contains("12")
-                            else -> {
-                                val regexNum = Regex("(^|\\D)$idLinea(\\D|$)")
-                                regexNum.containsMatchIn(textoCelda0) || regexNum.containsMatchIn(htmlCelda0)
-                            }
+                            "a" -> htmlCelda0.contains(Regex("stc[_-]?a\\b|linea[_-]?a\\b")) || textoCelda0 == "a" || textoCelda0 == "línea a"
+                            "b" -> htmlCelda0.contains(Regex("stc[_-]?b\\b|linea[_-]?b\\b")) || textoCelda0 == "b" || textoCelda0 == "línea b"
+                            "12" -> htmlCelda0.contains(Regex("stc[_-]?12\\b|linea[_-]?12\\b")) || textoCelda0.contains("12")
+                            else -> htmlCelda0.contains(Regex("stc[_-]?$idLinea\\b|linea[_-]?$idLinea\\b")) || Regex("(^|\\D)$idLinea(\\D|$)").containsMatchIn(textoCelda0)
                         }
 
                         if (coincide) {
-                            alerta.estado = estadoTexto.uppercase()
-                            alerta.estacionesAfectadas = if (afectadasTexto.isEmpty()) "Ninguna" else afectadasTexto
-                            huboCambios = true
-                            encontrada = true
-                            Log.d("SCRAPING_DEBUG", "Éxito -> ${alerta.nombre}: ${alerta.estado} | Afectadas: ${alerta.estacionesAfectadas}")
-                            break
+                            val estadoUpper = estadoTexto.uppercase()
+                            if (!estadosEncontrados.contains(estadoUpper)) {
+                                estadosEncontrados.add(estadoUpper)
+                            }
+
+                            val detalleCompleto = when {
+                                afectadasTexto.isNotEmpty() && infoAdicional.isNotEmpty() -> "$afectadasTexto ($infoAdicional)"
+                                afectadasTexto.isNotEmpty() -> afectadasTexto
+                                infoAdicional.isNotEmpty() -> infoAdicional
+                                else -> "Ninguna"
+                            }
+
+                            if (!afectadasEncontradas.contains(detalleCompleto)) {
+                                afectadasEncontradas.add(detalleCompleto)
+                            }
                         }
                     }
                 }
 
-                if (!encontrada) {
+                if (estadosEncontrados.isNotEmpty()) {
+                    // Junta los estados encontrados con salto de línea
+                    alerta.estado = estadosEncontrados.joinToString("\n")
+                    alerta.estacionesAfectadas = afectadasEncontradas.joinToString(" / ")
+                    huboCambios = true
+                    Log.d("SCRAPING_DEBUG", "Éxito -> ${alerta.nombre}:\n${alerta.estado}")
+                } else {
                     lineasFaltantes.add(alerta)
                     Log.w("SCRAPING_DEBUG", "No presente en HTML: ${alerta.nombre}. Recurriendo a respaldo.")
                 }
@@ -190,7 +226,7 @@ class AlertasFragment : Fragment() {
             }
 
         } catch (e: Exception) {
-            Log.e("SCRAPING_ERROR", "Error de lectura: ${e.message}", e)
+            Log.e("SCRAPING_ERROR", "Error general: ${e.message}", e)
             withContext(Dispatchers.Main) {
                 sincronizarEstadosFirebase()
             }
@@ -198,25 +234,34 @@ class AlertasFragment : Fragment() {
     }
 
     private fun sincronizarLineasFaltantesFirebase(faltantes: List<AlertaLinea>) {
-        val database = FirebaseDatabase.getInstance().getReference("lineas")
-        database.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
+        db.collection("estado_lineas")
+            .get()
+            .addOnSuccessListener { documents ->
+                var huboCambios = false
                 for (alerta in faltantes) {
-                    val key = alerta.nombre.replace(" ", "_").lowercase()
-                    val lineaSnapshot = snapshot.child(key)
-                    if (lineaSnapshot.exists()) {
-                        alerta.estado = lineaSnapshot.child("estado").getValue(String::class.java) ?: "SERVICIO REGULAR"
-                        alerta.estacionesAfectadas = lineaSnapshot.child("estacionesAfectadas").getValue(String::class.java) ?: "Ninguna"
-                        Log.d("SCRAPING_DEBUG", "Respaldo Firebase aplicado -> ${alerta.nombre}: ${alerta.estado}")
+                    // Busca coincidencia por el campo "nombre" de Firestore (ej. "Linea A" o "Linea B")
+                    val document = documents.find { doc ->
+                        val nombreFB = doc.getString("nombre") ?: ""
+                        val localLimpio = alerta.nombre.replace("í", "i").replace("Í", "I")
+                        val fbLimpio = nombreFB.replace("í", "i").replace("Í", "I")
+                        localLimpio.equals(fbLimpio, ignoreCase = true)
+                    }
+
+                    if (document != null) {
+                        alerta.estado = (document.getString("estado") ?: "SERVICIO REGULAR").uppercase()
+                        alerta.estacionesAfectadas = document.getString("estacionesAfectadas") ?: "Ninguna"
+                        huboCambios = true
+                        Log.d("SCRAPING_DEBUG", "Respaldo Firestore aplicado -> ${alerta.nombre}: ${alerta.estado}")
                     }
                 }
-                alertasAdapter.notifyDataSetChanged()
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.e("SCRAPING_DEBUG", "Error al leer respaldo de Firebase: ${error.message}")
+                if (huboCambios) {
+                    alertasAdapter.notifyDataSetChanged()
+                }
             }
-        })
+            .addOnFailureListener { e ->
+                Log.e("SCRAPING_DEBUG", "Error al leer respaldo en Firestore: ${e.message}")
+            }
     }
 
     private fun sincronizarEstadosFirebase() {
