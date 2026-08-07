@@ -1,11 +1,17 @@
 package com.example.guiametro
 
 import android.os.Bundle
+import android.view.View
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var btnTabRuta: LinearLayout
+    private lateinit var btnTabEstaciones: LinearLayout
+    private lateinit var btnTabAlertas: LinearLayout
+    private lateinit var btnTabMapa: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -15,24 +21,59 @@ class MainActivity : AppCompatActivity() {
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
 
-        // Vinculamos cada botón de tu barra inferior con su respectivo ID del nav_graph.xml
-        findViewById<LinearLayout>(R.id.btnTabRuta).setOnClickListener {
-            navController.navigate(R.id.rutaFragment)
+        // Inicializamos las vistas de los botones
+        btnTabRuta = findViewById(R.id.btnTabRuta)
+        btnTabEstaciones = findViewById(R.id.btnTabEstaciones)
+        btnTabAlertas = findViewById(R.id.btnTabAlertas)
+        btnTabMapa = findViewById(R.id.btnTabMapa)
+
+        // Escucha los cambios de pantalla para iluminar el botón correcto (incluso al presionar "Atrás")
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.rutaFragment -> actualizarEstadoTabs(btnTabRuta)
+                R.id.estacionesFragment -> actualizarEstadoTabs(btnTabEstaciones)
+                R.id.alertasFragment -> actualizarEstadoTabs(btnTabAlertas)
+                R.id.mapaFragment -> actualizarEstadoTabs(btnTabMapa)
+            }
         }
 
-        findViewById<LinearLayout>(R.id.btnTabEstaciones).setOnClickListener {
-            navController.navigate(R.id.estacionesFragment)
+        // Navegación con verificación para no recargar la pantalla si ya estás en ella
+        btnTabRuta.setOnClickListener {
+            if (navController.currentDestination?.id != R.id.rutaFragment) {
+                navController.navigate(R.id.rutaFragment)
+            }
         }
 
-        findViewById<LinearLayout>(R.id.btnTabAlertas).setOnClickListener {
-            // Forzamos la navegación limpia asegurándonos de que recargue el destino
+        btnTabEstaciones.setOnClickListener {
+            if (navController.currentDestination?.id != R.id.estacionesFragment) {
+                navController.navigate(R.id.estacionesFragment)
+            }
+        }
+
+        btnTabAlertas.setOnClickListener {
             if (navController.currentDestination?.id != R.id.alertasFragment) {
                 navController.navigate(R.id.alertasFragment)
             }
         }
 
-        findViewById<LinearLayout>(R.id.btnTabMapa).setOnClickListener {
-            navController.navigate(R.id.mapaFragment)
+        btnTabMapa.setOnClickListener {
+            if (navController.currentDestination?.id != R.id.mapaFragment) {
+                navController.navigate(R.id.mapaFragment)
+            }
+        }
+    }
+
+    // Cambia la propiedad isSelected del botón y sus vistas hijas (ImageView y TextView)
+    private fun actualizarEstadoTabs(tabSeleccionado: View) {
+        val tabs = listOf(btnTabRuta, btnTabEstaciones, btnTabAlertas, btnTabMapa)
+
+        tabs.forEach { tab ->
+            val esElSeleccionado = (tab == tabSeleccionado)
+
+            tab.isSelected = esElSeleccionado
+            for (i in 0 until tab.childCount) {
+                tab.getChildAt(i).isSelected = esElSeleccionado
+            }
         }
     }
 }

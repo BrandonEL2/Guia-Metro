@@ -3,6 +3,7 @@ package com.example.guiametro
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,14 +16,45 @@ class DetalleLineaFragment : Fragment(R.layout.fragment_detalle_linea) {
 
         val titulo = view.findViewById<TextView>(R.id.txtTituloLinea)
         val recyclerView = view.findViewById<RecyclerView>(R.id.rvEstacionesLinea)
+        val viewColorLinea = view.findViewById<View>(R.id.viewColorLinea)
+
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         val nombreLinea = arguments?.getString("linea_seleccionada") ?: "LÍNEA 1"
         titulo.text = "ESTACIONES DE $nombreLinea"
 
+        // Asigna el color o el drawable bicolor a la vista
+        aplicarFondoLinea(viewColorLinea, nombreLinea)
+
         val listaEstaciones = obtenerEstacionesPorLinea(nombreLinea)
 
         recyclerView.adapter = DetalleLineaAdapter(listaEstaciones)
+    }
+
+    private fun aplicarFondoLinea(view: View?, linea: String) {
+        if (view == null) return
+
+        if (linea == "LÍNEA B") {
+            // Usa el vector drawable bicolor para la Línea B
+            view.setBackgroundResource(R.drawable.bg_tarjeta_bicolor)
+        } else {
+            // Asigna el color sólido correspondiente
+            val colorRes = when (linea) {
+                "LÍNEA 1" -> R.color.linea_1
+                "LÍNEA 2" -> R.color.linea_2
+                "LÍNEA 3" -> R.color.linea_3
+                "LÍNEA 4" -> R.color.linea_4
+                "LÍNEA 5" -> R.color.linea_5
+                "LÍNEA 6" -> R.color.linea_6
+                "LÍNEA 7" -> R.color.linea_7
+                "LÍNEA 8" -> R.color.linea_8
+                "LÍNEA 9" -> R.color.linea_9
+                "LÍNEA 12" -> R.color.linea_12
+                "LÍNEA A" -> R.color.linea_a
+                else -> R.color.linea_default
+            }
+            view.setBackgroundColor(ContextCompat.getColor(requireContext(), colorRes))
+        }
     }
 
     private fun obtenerEstacionesPorLinea(linea: String): List<Estacion> {
@@ -110,7 +142,7 @@ class DetalleLineaFragment : Fragment(R.layout.fragment_detalle_linea) {
                 Estacion(71, "Morelos", "L4", listOf("LB"), true),
                 Estacion(72, "Candelaria", "L4", listOf("L1"), true),
                 Estacion(73, "Fray Servando", "L4", emptyList(), false),
-                Estacion(74, "Jamaiquita", "L4", emptyList(), false), // Jamaica
+                Estacion(74, "Jamaiquita", "L4", emptyList(), false),
                 Estacion(75, "Santa Anita", "L4", listOf("L8"), true)
             )
 

@@ -1,25 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="#F5F5F5"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#F5F7FA"
+    android:orientation="vertical"
+    android:padding="16dp">
 
+    <!-- TARJETA DE ENCABEZADO DE LÍNEA -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="@android:color/white"
+        app:cardCornerRadius="18dp"
+        app:cardElevation="5dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="18dp">
+
+            <!-- Barra superior con el color distintivo de la línea -->
+            <View
+                android:id="@+id/viewColorLinea"
+                android:layout_width="match_parent"
+                android:layout_height="8dp"
+                android:layout_marginBottom="14dp"
+                android:background="@color/linea_1" />
+
+            <TextView
+                android:id="@+id/txtTituloLinea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#212121"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                tools:text="🚇 LÍNEA 1 DEL METRO" />
+
+            <TextView
+                android:id="@+id/txtRutaLinea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="#757575"
+                android:textSize="14sp"
+                tools:text="Observatorio  →  Pantitlán" />
+
+            <TextView
+                android:id="@+id/txtNumeroEstaciones"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:textColor="#757575"
+                android:textSize="13sp"
+                tools:text="20 estaciones" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- TÍTULO DE LA LISTA -->
     <TextView
-        android:id="@+id/txtTituloLinea"
-        android:text="LÍNEA 1 DEL METRO"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:textColor="@android:color/black"
-        android:layout_marginBottom="12dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="Estaciones del recorrido"
+        android:textColor="#212121"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
-    <!-- Lista vertical de estaciones para esa línea -->
+    <!-- RECYCLERVIEW CON LAS ESTACIONES DE LA LÍNEA -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvEstacionesLinea"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="10dp"
+        tools:listitem="@layout/item_paso_itinerario" />
 
 </LinearLayout>

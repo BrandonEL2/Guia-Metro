@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/fondo_pantalla">
 
-    <!-- Fragmento principal donde cambian las pantallas -->
+    <!-- CONTENEDOR DE FRAGMENTS -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -15,126 +15,140 @@
         android:layout_height="0dp"
         app:defaultNavHost="true"
         app:navGraph="@navigation/nav_graph"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/miBarraInferior"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Barra inferior con diseño de pestañas (Icono + Texto) -->
+    <!-- BARRA INFERIOR DE NAVEGACIÓN -->
     <LinearLayout
         android:id="@+id/miBarraInferior"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:background="?android:attr/windowBackground"
-        android:elevation="8dp"
         android:layout_width="0dp"
-        android:layout_height="56dp"
+        android:layout_height="65dp"
+        android:background="@android:color/white"
+        android:elevation="12dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingTop="4dp"
+        android:paddingBottom="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        <!-- Pestaña Ruta -->
+        <!-- TAB: RUTA -->
         <LinearLayout
             android:id="@+id/btnTabRuta"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:id="@+id/imgTabRuta"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_directions"
-                app:tint="#2E7D32"/>
+                app:tint="@color/tab_selector_color" />
 
             <TextView
+                android:id="@+id/txtTabRuta"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
                 android:text="Ruta"
-                android:textSize="10sp"
-                android:textColor="#2E7D32"/>
+                android:textColor="@color/tab_selector_color"
+                android:textSize="12sp" />
         </LinearLayout>
 
-        <!-- Pestaña Estaciones -->
+        <!-- TAB: ESTACIONES -->
         <LinearLayout
             android:id="@+id/btnTabEstaciones"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:id="@+id/imgTabEstaciones"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_mapmode"
-                app:tint="#666666"/>
+                app:tint="@color/tab_selector_color" />
 
             <TextView
+                android:id="@+id/txtTabEstaciones"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
                 android:text="Estaciones"
-                android:textSize="10sp"
-                android:textColor="#666666"/>
+                android:textColor="@color/tab_selector_color"
+                android:textSize="12sp" />
         </LinearLayout>
 
-        <!-- Pestaña Alertas -->
+        <!-- TAB: ALERTAS -->
         <LinearLayout
             android:id="@+id/btnTabAlertas"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:id="@+id/imgTabAlertas"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@android:drawable/ic_menu_info_details"
-                app:tint="#666666"/>
+                app:tint="@color/tab_selector_color" />
 
             <TextView
+                android:id="@+id/txtTabAlertas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
                 android:text="Alertas"
-                android:textSize="10sp"
-                android:textColor="#666666"/>
+                android:textColor="@color/tab_selector_color"
+                android:textSize="12sp" />
         </LinearLayout>
 
-        <!-- Pestaña Mapa -->
+        <!-- TAB: MAPA -->
         <LinearLayout
             android:id="@+id/btnTabMapa"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:focusable="true">
+            android:focusable="true"
+            android:gravity="center"
+            android:orientation="vertical">
 
             <ImageView
-                android:layout_width="22dp"
-                android:layout_height="22dp"
+                android:id="@+id/imgTabMapa"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@android:drawable/ic_dialog_map"
-                app:tint="#666666"/>
+                app:tint="@color/tab_selector_color" />
 
             <TextView
+                android:id="@+id/txtTabMapa"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
                 android:text="Mapa"
-                android:textSize="10sp"
-                android:textColor="#666666"/>
+                android:textColor="@color/tab_selector_color"
+                android:textSize="12sp" />
         </LinearLayout>
 
     </LinearLayout>

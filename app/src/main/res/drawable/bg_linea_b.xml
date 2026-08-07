@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="55dp"
+    android:height="15dp"
+    android:viewportWidth="120"
+    android:viewportHeight="40">
+
+    <!-- Mitad Superior (Verde) -->
+    <path
+        android:fillColor="@color/linea_b_verde"
+        android:pathData="M0,0 h120 v20 h-120 z" />
+
+    <!-- Mitad Inferior (Gris) -->
+    <path
+        android:fillColor="@color/linea_b_gris"
+        android:pathData="M0,20 h120 v20 h-120 z" />
+
+</vector>
