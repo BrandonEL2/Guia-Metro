@@ -14,7 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GuiaMetro">
-
+        <activity
+            android:name=".ProgramarAlertaActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <!-- SPLASH: Único punto de entrada oficial al abrir la app -->
         <activity
             android:name=".SplashActivity"
@@ -28,6 +31,7 @@
 
         <!-- MAIN ACTIVITY: Sin intent-filter y con android:exported="false" -->
         <activity
+
             android:name=".MainActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />

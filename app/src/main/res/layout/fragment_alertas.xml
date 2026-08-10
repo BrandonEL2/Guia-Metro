@@ -7,6 +7,13 @@
     android:orientation="vertical"
     android:padding="12dp">
 
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/fabProgramarAlerta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Programar Alerta"
+        app:icon="@android:drawable/ic_popup_reminder" />
+
     <!-- Lista de tarjetas de alertas -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerAlertas"

@@ -1,5 +1,6 @@
 package com.example.guiametro
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -58,7 +59,15 @@ class AlertasFragment : Fragment() {
             }
         }
 
-        // 3. Iniciar temporizador en tiempo real (Refresco cada 30 segundos)
+        // 3. Botón flotante para abrir la pantalla de Programar Alertas
+        // Reemplaza esta parte dentro de onViewCreated:
+        val fabProgramarAlerta = view.findViewById<View>(R.id.fabProgramarAlerta)
+        fabProgramarAlerta?.setOnClickListener {
+            val intent = Intent(requireContext(), ProgramarAlertaActivity::class.java)
+            startActivity(intent)
+        }
+
+        // 4. Iniciar temporizador en tiempo real (Refresco cada 30 segundos)
         iniciarBucleTiempoReal()
     }
 
@@ -239,7 +248,6 @@ class AlertasFragment : Fragment() {
             .addOnSuccessListener { documents ->
                 var huboCambios = false
                 for (alerta in faltantes) {
-                    // Busca coincidencia por el campo "nombre" de Firestore (ej. "Linea A" o "Linea B")
                     val document = documents.find { doc ->
                         val nombreFB = doc.getString("nombre") ?: ""
                         val localLimpio = alerta.nombre.replace("í", "i").replace("Í", "I")

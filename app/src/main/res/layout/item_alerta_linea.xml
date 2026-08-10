@@ -16,16 +16,13 @@
         android:layout_height="wrap_content"
         android:padding="18dp">
 
-        <!-- Barra lateral del color de la línea -->
-
-
-        <!-- Icono/Cuadro de línea -->
+        <!-- Icono/Cuadro de línea (Se añadió startToStartOf="parent") -->
         <FrameLayout
             android:id="@+id/contenedorCuadroLinea"
             android:layout_width="52dp"
             android:layout_height="52dp"
-            android:layout_marginStart="14dp"
             android:background="@drawable/bg_icono_linea"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
@@ -53,20 +50,37 @@
             app:layout_constraintTop_toTopOf="@id/contenedorCuadroLinea"
             tools:text="LÍNEA 1" />
 
+        <!-- Recuadro/Etiqueta 'ESTADO DEL SERVICIO' -->
+        <TextView
+            android:id="@+id/lblEstadoTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginTop="6dp"
+            android:background="#F5F5F5"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="2dp"
+            android:text="ESTADO DEL SERVICIO"
+            android:textColor="#757575"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/contenedorCuadroLinea"
+            app:layout_constraintTop_toBottomOf="@id/txtNombreLinea" />
+
         <!-- Estado del servicio -->
         <TextView
             android:id="@+id/txtEstado"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="2dp"
             android:maxLines="5"
             android:textColor="#2E7D32"
             android:textSize="15sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/contenedorCuadroLinea"
-            app:layout_constraintTop_toBottomOf="@id/txtNombreLinea"
+            app:layout_constraintTop_toBottomOf="@id/lblEstadoTitulo"
             tools:text="SERVICIO REGULAR" />
 
         <!-- Barrera dinámica -->
