@@ -8,17 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.AnyRes
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
@@ -51,7 +48,7 @@ class AlertasFragment : Fragment() {
         alertasAdapter = AlertasAdapter(listaAlertas)
         recyclerView.adapter = alertasAdapter
 
-        // 2. Botón para forzar actualización manual
+        // 2. Botón para forzar actualización manual inmediata
         val btnActualizar = view.findViewById<View>(R.id.btnActualizar)
         btnActualizar?.setOnClickListener {
             viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
@@ -59,16 +56,15 @@ class AlertasFragment : Fragment() {
             }
         }
 
-        // 3. Botón flotante para abrir la pantalla de Programar Alertas
-        // Reemplaza esta parte dentro de onViewCreated:
+        // 3. Botón para abrir la pantalla de Programar Alertas
         val fabProgramarAlerta = view.findViewById<View>(R.id.fabProgramarAlerta)
         fabProgramarAlerta?.setOnClickListener {
             val intent = Intent(requireContext(), ProgramarAlertaActivity::class.java)
             startActivity(intent)
         }
 
-        // 4. Iniciar temporizador en tiempo real (Refresco cada 30 segundos)
-        iniciarBucleTiempoReal()
+        // 4. Iniciar ciclo en tiempo real controlado por ciclo de vida
+        iniciarBucleOptimizado()
     }
 
     private fun cargarListaBaseEstetica() {
@@ -91,15 +87,20 @@ class AlertasFragment : Fragment() {
         }
     }
 
-    private fun iniciarBucleTiempoReal() {
-        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-            while (isActive) {
-                consultarEstadoOficialMetro()
-                delay(30000) // Espera 30 segundos antes de la siguiente consulta
+    // Se pausa automáticamente si la app va a segundo plano o se cambia de pestaña
+    private fun iniciarBucleOptimizado() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                while (true) {
+                    withContext(Dispatchers.IO) {
+                        consultarEstadoOficialMetro()
+                    }
+                    // 120 segundos (2 minutos) de espera mientras el usuario mira la pantalla
+                    delay(120_000)
+                }
             }
         }
     }
-
 
     private suspend fun consultarEstadoOficialMetro() {
         try {
@@ -109,7 +110,7 @@ class AlertasFragment : Fragment() {
             // 1. Obtener la página contenedora y la URL del iframe
             val docPrincipal = Jsoup.connect(urlPrincipal)
                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
-                .timeout(15000)
+                .timeout(10000)
                 .get()
 
             val urlIframe = docPrincipal.select("iframe").firstOrNull()?.attr("abs:src") ?: urlPrincipal
@@ -117,7 +118,7 @@ class AlertasFragment : Fragment() {
             // 2. Cargar Página 1 (contiene filas 1 a 10)
             val responsePag1 = Jsoup.connect(urlIframe)
                 .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
-                .timeout(15000)
+                .timeout(10000)
                 .execute()
 
             val docIframe1 = responsePag1.parse()
@@ -130,7 +131,7 @@ class AlertasFragment : Fragment() {
                 try {
                     val responseXml = Jsoup.connect(urlIframe)
                         .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
-                        .timeout(15000)
+                        .timeout(10000)
                         .cookies(cookiesSesion)
                         .header("Faces-Request", "partial/ajax")
                         .header("X-Requested-With", "XMLHttpRequest")
@@ -184,7 +185,6 @@ class AlertasFragment : Fragment() {
 
                         if (estadoTexto.isEmpty() || estadoTexto.contains("estado", ignoreCase = true)) continue
 
-                        // Detección agnóstica a la extensión (.png, .svg, .xhtml) o guiones
                         val coincide = when (idLinea) {
                             "a" -> htmlCelda0.contains(Regex("stc[_-]?a\\b|linea[_-]?a\\b")) || textoCelda0 == "a" || textoCelda0 == "línea a"
                             "b" -> htmlCelda0.contains(Regex("stc[_-]?b\\b|linea[_-]?b\\b")) || textoCelda0 == "b" || textoCelda0 == "línea b"
@@ -213,14 +213,16 @@ class AlertasFragment : Fragment() {
                 }
 
                 if (estadosEncontrados.isNotEmpty()) {
-                    // Junta los estados encontrados con salto de línea
-                    alerta.estado = estadosEncontrados.joinToString("\n")
-                    alerta.estacionesAfectadas = afectadasEncontradas.joinToString(" / ")
-                    huboCambios = true
-                    Log.d("SCRAPING_DEBUG", "Éxito -> ${alerta.nombre}:\n${alerta.estado}")
+                    val nuevoEstado = estadosEncontrados.joinToString("\n")
+                    val nuevasAfectadas = afectadasEncontradas.joinToString(" / ")
+
+                    if (alerta.estado != nuevoEstado || alerta.estacionesAfectadas != nuevasAfectadas) {
+                        alerta.estado = nuevoEstado
+                        alerta.estacionesAfectadas = nuevasAfectadas
+                        huboCambios = true
+                    }
                 } else {
                     lineasFaltantes.add(alerta)
-                    Log.w("SCRAPING_DEBUG", "No presente en HTML: ${alerta.nombre}. Recurriendo a respaldo.")
                 }
             }
 
@@ -228,14 +230,14 @@ class AlertasFragment : Fragment() {
                 sincronizarLineasFaltantesFirebase(lineasFaltantes)
             }
 
-            withContext(Dispatchers.Main) {
-                if (huboCambios) {
+            if (huboCambios) {
+                withContext(Dispatchers.Main) {
                     alertasAdapter.notifyDataSetChanged()
                 }
             }
 
         } catch (e: Exception) {
-            Log.e("SCRAPING_ERROR", "Error general: ${e.message}", e)
+            Log.e("SCRAPING_ERROR", "Falla de red, usando Firestore: ${e.message}")
             withContext(Dispatchers.Main) {
                 sincronizarEstadosFirebase()
             }
@@ -256,10 +258,14 @@ class AlertasFragment : Fragment() {
                     }
 
                     if (document != null) {
-                        alerta.estado = (document.getString("estado") ?: "SERVICIO REGULAR").uppercase()
-                        alerta.estacionesAfectadas = document.getString("estacionesAfectadas") ?: "Ninguna"
-                        huboCambios = true
-                        Log.d("SCRAPING_DEBUG", "Respaldo Firestore aplicado -> ${alerta.nombre}: ${alerta.estado}")
+                        val estadoFb = (document.getString("estado") ?: "SERVICIO REGULAR").uppercase()
+                        val afectadasFb = document.getString("estacionesAfectadas") ?: "Ninguna"
+
+                        if (alerta.estado != estadoFb || alerta.estacionesAfectadas != afectadasFb) {
+                            alerta.estado = estadoFb
+                            alerta.estacionesAfectadas = afectadasFb
+                            huboCambios = true
+                        }
                     }
                 }
 
@@ -276,6 +282,7 @@ class AlertasFragment : Fragment() {
         db.collection("estado_lineas")
             .get()
             .addOnSuccessListener { documents ->
+                var huboCambios = false
                 for (document in documents) {
                     val nombreFirebase = document.getString("nombre") ?: continue
                     val estadoFirebase = document.getString("estado") ?: "SERVICIO REGULAR"
@@ -287,14 +294,17 @@ class AlertasFragment : Fragment() {
                         localLimpio.equals(fbLimpio, ignoreCase = true)
                     }
 
-                    if (itemEncontrado != null) {
+                    if (itemEncontrado != null && (itemEncontrado.estado != estadoFirebase || itemEncontrado.estacionesAfectadas != afectadasFirebase)) {
                         itemEncontrado.estado = estadoFirebase
                         itemEncontrado.estacionesAfectadas = afectadasFirebase
+                        huboCambios = true
                     }
                 }
 
-                activity?.runOnUiThread {
-                    alertasAdapter.notifyDataSetChanged()
+                if (huboCambios) {
+                    activity?.runOnUiThread {
+                        alertasAdapter.notifyDataSetChanged()
+                    }
                 }
             }
             .addOnFailureListener { e ->
