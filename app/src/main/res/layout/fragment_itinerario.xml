@@ -22,7 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        app:cardBackgroundColor="@android:color/white"
+        app:cardBackgroundColor="@color/fondo_tarjeta"
         app:cardCornerRadius="18dp"
         app:cardElevation="6dp">
 
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:text="🔄 Transbordos: 0"
-                android:textColor="#616161"
+                android:textColor="@color/textoSubtitulo"
                 android:textSize="16sp"
                 tools:text="🔄 Transbordos: 1" />
 

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colores dinámicos MODO OSCURO -->
+    <color name="fondo_pantalla">#121212</color>
+    <color name="fondo_tarjeta">#1E1E1E</color>
+    <color name="texto_principal">#FFFFFF</color>
+    <color name="texto_secundario">#B0B0B0</color>
+    <color name="textoPrincipal">#FFFFFF</color>
+    <color name="fondo_input">#2C2C2C</color>
+    <color name="texto_input">#E0E0E0</color>
+    <color name="icono_tres_puntos">#FFFFFF</color>
+    <color name="texto_subtitulo">#A0A0A0</color>
+    <color name="azul_primario">#64B5F6</color>
+    <color name="texto_boton_cancelar">#B0B0B0</color>
+    <color name="fondo_splash">#121212</color>
+    <color name="colorPrimary">#64B5F6</color>
+
+    <color name="fondoEtiqueta">#2A2A2A</color>
+    <color name="lineaSeparador">#333333</color>
+    <color name="textoSubtitulo">#9E9E9E</color>
+    <color name="textoSecundario">#B0B0B0</color>
+    <color name="iconoTint">#757575</color>
+    <color name="fondo_campo_entrada">#2C2C2C</color>
+</resources>

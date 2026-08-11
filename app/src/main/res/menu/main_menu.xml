@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_tema"
+        android:title="Tema"
+        app:showAsAction="never">
+        <menu>
+            <item
+                android:id="@+id/tema_claro"
+                android:title="☀️ Modo Claro" />
+            <item
+                android:id="@+id/tema_oscuro"
+                android:title="🌙 Modo Oscuro" />
+        </menu>
+    </item>
+</menu>

@@ -1,9 +1,15 @@
 package com.example.guiametro
 
+import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.widget.PopupMenu
 import androidx.navigation.fragment.NavHostFragment
 
 class MainActivity : AppCompatActivity() {
@@ -13,7 +19,14 @@ class MainActivity : AppCompatActivity() {
     private lateinit var btnTabAlertas: LinearLayout
     private lateinit var btnTabMapa: LinearLayout
 
+    // Vistas para el encabezado dinámico
+    private lateinit var txtHeaderTitulo: TextView
+    private lateinit var txtHeaderSubtitulo: TextView
+    private lateinit var imgHeaderIcon: ImageView
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Se removió aplicarTemaGuardado() de aquí para evitar la duplicación de Activity
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -27,13 +40,44 @@ class MainActivity : AppCompatActivity() {
         btnTabAlertas = findViewById(R.id.btnTabAlertas)
         btnTabMapa = findViewById(R.id.btnTabMapa)
 
-        // Escucha los cambios de pantalla para iluminar el botón correcto (incluso al presionar "Atrás")
+        // Inicializamos las vistas del encabezado dinámico
+        txtHeaderTitulo = findViewById(R.id.txtHeaderTitulo)
+        txtHeaderSubtitulo = findViewById(R.id.txtHeaderSubtitulo)
+        imgHeaderIcon = findViewById(R.id.imgHeaderIcon)
+
+        // Configurar el listener del botón de 3 puntos
+        val btnOpciones = findViewById<ImageButton>(R.id.btnOpciones)
+        btnOpciones.setOnClickListener { view ->
+            mostrarMenuOpciones(view)
+        }
+
+        // Escucha los cambios de pantalla para actualizar las pestañas y el encabezado
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.rutaFragment -> actualizarEstadoTabs(btnTabRuta)
-                R.id.estacionesFragment -> actualizarEstadoTabs(btnTabEstaciones)
-                R.id.alertasFragment -> actualizarEstadoTabs(btnTabAlertas)
-                R.id.mapaFragment -> actualizarEstadoTabs(btnTabMapa)
+                R.id.rutaFragment -> {
+                    actualizarEstadoTabs(btnTabRuta)
+                    imgHeaderIcon.visibility = View.GONE
+                    txtHeaderTitulo.text = "Planifica tu ruta"
+                    txtHeaderSubtitulo.text = "Selecciona un origen y un destino"
+                }
+                R.id.estacionesFragment -> {
+                    actualizarEstadoTabs(btnTabEstaciones)
+                    imgHeaderIcon.visibility = View.GONE
+                    txtHeaderTitulo.text = "🚇 MetroGuía CDMX"
+                    txtHeaderSubtitulo.text = "Explora líneas, estaciones y encuentra tu ruta ideal"
+                }
+                R.id.alertasFragment -> {
+                    actualizarEstadoTabs(btnTabAlertas)
+                    imgHeaderIcon.visibility = View.GONE
+                    txtHeaderTitulo.text = "Alertas y Avisos"
+                    txtHeaderSubtitulo.text = "Estado del servicio en tiempo real"
+                }
+                R.id.mapaFragment -> {
+                    actualizarEstadoTabs(btnTabMapa)
+                    imgHeaderIcon.visibility = View.GONE
+                    txtHeaderTitulo.text = "Mapa de la Red"
+                    txtHeaderSubtitulo.text = "Visualiza el mapa de líneas"
+                }
             }
         }
 
@@ -61,6 +105,33 @@ class MainActivity : AppCompatActivity() {
                 navController.navigate(R.id.mapaFragment)
             }
         }
+    }
+
+    // Despliega el menú de 3 puntos flotante (PopupMenu) al presionar el icono
+    private fun mostrarMenuOpciones(view: View) {
+        val popup = PopupMenu(this, view)
+        popup.menuInflater.inflate(R.menu.main_menu, popup.menu)
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.tema_claro -> {
+                    cambiarTema(AppCompatDelegate.MODE_NIGHT_NO)
+                    true
+                }
+                R.id.tema_oscuro -> {
+                    cambiarTema(AppCompatDelegate.MODE_NIGHT_YES)
+                    true
+                }
+                else -> false
+            }
+        }
+        popup.show()
+    }
+
+    // Guarda y aplica el tema seleccionado cuando el usuario lo cambia manualmente
+    private fun cambiarTema(modo: Int) {
+        AppCompatDelegate.setDefaultNightMode(modo)
+        val prefs = getSharedPreferences("AjustesMetroPrefs", Context.MODE_PRIVATE)
+        prefs.edit().putInt("TEMA_MODO", modo).apply()
     }
 
     // Cambia la propiedad isSelected del botón y sus vistas hijas (ImageView y TextView)

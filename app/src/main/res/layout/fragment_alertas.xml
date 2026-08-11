@@ -14,16 +14,14 @@
         android:text="Programar Alerta"
         app:icon="@android:drawable/ic_popup_reminder" />
 
-    <!-- Lista de tarjetas de alertas -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerAlertas"
         android:layout_width="match_parent"
-        android:layout_height="636dp"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:clipToPadding="false"
         android:paddingBottom="12dp" />
 
-    <!-- Botón Actualizar -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnActualizar"
         android:layout_width="match_parent"
@@ -37,7 +35,7 @@
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:backgroundTint="#1565C0"
+        app:backgroundTint="@color/colorPrimary"
         app:cornerRadius="16dp"
         app:elevation="8dp"
         app:icon="@drawable/ic_refresh"

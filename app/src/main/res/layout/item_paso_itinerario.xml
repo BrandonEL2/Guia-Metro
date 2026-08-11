@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="6dp"
-    app:cardBackgroundColor="@android:color/white"
+    app:cardBackgroundColor="?attr/colorSurface"
     app:cardCornerRadius="16dp"
     app:cardElevation="3dp">
 
@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:minHeight="86dp"
         android:paddingHorizontal="16dp"
-        android:paddingVertical="35dp">
+        android:paddingVertical="16dp">
 
         <!-- Número de paso (Círculo numerado) -->
         <TextView
@@ -45,8 +45,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- Indicador de Punto/Icono de la Estación -->
-
-        <!-- Línea conectora inferior -->
         <View
             android:id="@+id/puntoEstacion"
             android:layout_width="20dp"
@@ -58,6 +56,7 @@
             app:layout_constraintTop_toTopOf="@id/txtNombreEstacion"
             app:layout_constraintVertical_bias="1.0" />
 
+        <!-- Línea conectora inferior -->
         <View
             android:id="@+id/lineaConectora"
             android:layout_width="3dp"
@@ -74,7 +73,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
-            android:textColor="@color/textoPrincipal"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
@@ -89,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
             android:layout_marginTop="4dp"
-            android:textColor="#757575"
+            android:textColor="?android:attr/textColorSecondary"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -98,5 +97,4 @@
             tools:text="Aborda Línea 3 • Dirección Universidad" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.cardview.widget.CardView>

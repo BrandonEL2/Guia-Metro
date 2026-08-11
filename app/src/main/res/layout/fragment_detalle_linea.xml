@@ -5,16 +5,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7FA"
+    android:background="@color/fondo_pantalla"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- TARJETA DE ENCABEZADO DE LÍNEA -->
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        app:cardBackgroundColor="@android:color/white"
+        app:cardBackgroundColor="@color/fondo_tarjeta"
         app:cardCornerRadius="18dp"
         app:cardElevation="5dp">
 
@@ -24,7 +23,6 @@
             android:orientation="vertical"
             android:padding="18dp">
 
-            <!-- Barra superior con el color distintivo de la línea -->
             <View
                 android:id="@+id/viewColorLinea"
                 android:layout_width="match_parent"
@@ -36,7 +34,7 @@
                 android:id="@+id/txtTituloLinea"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#212121"
+                android:textColor="@color/texto_principal"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 tools:text="🚇 LÍNEA 1 DEL METRO" />
@@ -46,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textColor="#757575"
+                android:textColor="@color/texto_secundario"
                 android:textSize="14sp"
                 tools:text="Observatorio  →  Pantitlán" />
 
@@ -55,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
-                android:textColor="#757575"
+                android:textColor="@color/texto_secundario"
                 android:textSize="13sp"
                 tools:text="20 estaciones" />
 
@@ -63,17 +61,15 @@
 
     </androidx.cardview.widget.CardView>
 
-    <!-- TÍTULO DE LA LISTA -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:text="Estaciones del recorrido"
-        android:textColor="#212121"
+        android:textColor="@color/texto_principal"
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <!-- RECYCLERVIEW CON LAS ESTACIONES DE LA LÍNEA -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvEstacionesLinea"
         android:layout_width="match_parent"

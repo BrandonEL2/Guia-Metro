@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    android:background="@color/fondo_pantalla">
+    android:background="?android:attr/windowBackground">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,28 +13,12 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <!-- Título -->
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Planifica tu ruta"
-            android:textColor="@color/textoPrincipal"
-            android:textSize="28sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="Selecciona un origen y un destino"
-            android:textColor="#757575"
-            android:textSize="14sp" />
-
         <!-- ORIGEN -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            app:cardBackgroundColor="?attr/colorSurface"
             app:cardCornerRadius="16dp"
             app:cardElevation="5dp">
 
@@ -48,7 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Origen"
-                    android:textColor="@color/colorOrigen"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -75,6 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
+            app:cardBackgroundColor="?attr/colorSurface"
             app:cardCornerRadius="16dp"
             app:cardElevation="5dp">
 
@@ -88,7 +73,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Destino"
-                    android:textColor="@color/colorDestino"
+                    android:textColor="?attr/colorSecondary"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -118,16 +103,16 @@
             android:layout_marginTop="28dp"
             android:text="BUSCAR RUTA"
             android:textAllCaps="true"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/colorOnPrimary"
             android:textSize="17sp"
             android:textStyle="bold"
-            app:backgroundTint="@color/colorPrimary"
+            app:backgroundTint="?attr/colorPrimary"
             app:cornerRadius="28dp"
             app:elevation="8dp"
             app:icon="@drawable/ic_search"
             app:iconGravity="textStart"
             app:iconPadding="8dp"
-            app:iconTint="@android:color/white" />
+            app:iconTint="?attr/colorOnPrimary" />
 
         <ProgressBar
             android:id="@+id/progressBusqueda"

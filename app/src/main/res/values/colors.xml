@@ -7,7 +7,7 @@
     <color name="fondoInputs">#F3F4F6</color>       <!-- Gris muy claro para tarjetas/desplegables -->
     <color name="textoPrincipal">#1F2937</color>    <!-- Gris oscuro principal -->
     <color name="bordeInput">#E5E7EB</color>        <!-- Borde sutil -->
-    <color name="fondo_pantalla">#F3F4F6</color>
+
 
     <color name="linea_1">#F04E98</color>
     <color name="linea_2">#005EB8</color>
@@ -25,5 +25,26 @@
 
         <color name="linea_b_verde">#008033</color>
         <color name="linea_b_gris">#808080</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#6200EE</color>
+    <color name="purple_700">#3700B3</color>
 
+    <!-- Colores dinámicos MODO CLARO -->
+    <color name="fondo_pantalla">#F8F9FA</color>
+    <color name="fondo_tarjeta">#FFFFFF</color>
+    <color name="texto_principal">#1A1A1A</color>
+    <color name="texto_secundario">#757575</color>
+    <color name="fondo_input">#F1F3F4</color>
+    <color name="texto_input">#202124</color>
+    <color name="icono_tres_puntos">#1A1A1A</color>
+    <color name="fondo_splash">#FFFFFF</color>
+        <color name="texto_subtitulo">#616161</color>
+        <color name="azul_primario">#1976D2</color>
+        <color name="texto_boton_cancelar">#757575</color>
+    <color name="textoSecundario">#666666</color>
+    <color name="textoSubtitulo">#616161</color>
+    <color name="fondoEtiqueta">#F5F5F5</color>
+    <color name="lineaSeparador">#ECECEC</color>
+    <color name="iconoTint">#B0B0B0</color>
+    <color name="fondo_campo_entrada">#2C2C2C</color>
 </resources>
