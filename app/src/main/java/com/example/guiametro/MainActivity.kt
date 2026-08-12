@@ -30,30 +30,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Ajuste automático de márgenes para la barra de estado y barra de navegación
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content)) { _, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            val header = findViewById<View>(R.id.encabezadoHeader)
-            val bottomNav = findViewById<View>(R.id.miBarraInferior)
-
-            // Agrega el espacio superior de la hora e iconos de la barra de estado al encabezado
-            header?.setPadding(
-                header.paddingLeft,
-                systemBars.top + 12, // Suma la altura de la barra de estado al padding original
-                header.paddingRight,
-                header.paddingBottom
-            )
-
-            // Agrega el espacio de los gestos o botones inferiores a la barra de pestañas
-            bottomNav?.setPadding(
-                bottomNav.paddingLeft,
-                bottomNav.paddingTop,
-                bottomNav.paddingRight,
-                systemBars.bottom + 4
-            )
-
-            insets
-        }
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
