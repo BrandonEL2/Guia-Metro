@@ -1,5 +1,6 @@
 package com.example.guiametro
 
+import android.Manifest
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
@@ -14,8 +15,8 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
@@ -34,11 +35,20 @@ class ProgramarAlertaActivity : AppCompatActivity() {
     private lateinit var spinnerLineas: AutoCompleteTextView
     private lateinit var btnHora: Button
 
+    // Contrato moderno para solicitar el permiso sin reiniciar ni cerrar la Activity
+    private val requestNotificationPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            Toast.makeText(this, "Permiso de notificaciones concedido", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "No recibirás alertas hasta habilitar los permisos", Toast.LENGTH_LONG).show()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_programar_alerta)
-
-        solicitarPermisoNotificaciones()
 
         spinnerLineas = findViewById(R.id.spinnerLineas)
         btnHora = findViewById(R.id.btnHora)
@@ -47,6 +57,9 @@ class ProgramarAlertaActivity : AppCompatActivity() {
 
         val btnGuardar = findViewById<Button>(R.id.btnGuardar)
         val btnCancelar = findViewById<Button>(R.id.btnCancelar)
+
+        // Solicitar el permiso de forma segura al abrir la pantalla
+        solicitarPermisoNotificaciones()
 
         val listaLineas = arrayOf(
             "Línea 1", "Línea 2", "Línea 3", "Línea 4",
@@ -214,14 +227,10 @@ class ProgramarAlertaActivity : AppCompatActivity() {
 
     private fun solicitarPermisoNotificaciones() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
                 != PackageManager.PERMISSION_GRANTED
             ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
-                    101
-                )
+                requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
     }

@@ -14,6 +14,13 @@ class SplashActivity : AppCompatActivity() {
     private var runnable: Runnable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Evita reiniciar la app si ya estaba viva en segundo plano
+        if (!isTaskRoot) {
+            super.onCreate(savedInstanceState)
+            finish()
+            return
+        }
+
         // Aplicar el tema AQUÍ antes de dibujar la vista para evitar reinicios dobles en MainActivity
         aplicarTemaGuardado()
 

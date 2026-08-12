@@ -74,16 +74,23 @@ class EstacionesBusquedaAdapter(
     override fun getItemCount(): Int = listaFiltrada.size
 
     fun filtrar(query: String) {
-        listaFiltrada = if (query.isEmpty()) {
+        val queryLimpia = normalizarTexto(query)
+
+        listaFiltrada = if (queryLimpia.isEmpty()) {
             emptyList()
         } else {
-            listaCompleta.filter {
-                it.nombre.contains(query, ignoreCase = true) ||
-                        it.idLinea.contains(query, ignoreCase = true) ||
-                        it.detalleLinea.contains(query, ignoreCase = true) ||
-                        it.conexiones.contains(query, ignoreCase = true)
+            listaCompleta.filter { estacion ->
+                // Evalúa SOLO el nombre, ignorando acentos y exigiendo que empiece exactamente con la query
+                normalizarTexto(estacion.nombre).startsWith(queryLimpia)
             }
         }
         notifyDataSetChanged()
+    }
+
+    // Función auxiliar para quitar acentos y pasar a minúsculas
+    private fun normalizarTexto(texto: String): String {
+        val regex = "\\p{InCombiningDiacriticalMarks}+".toRegex()
+        val normalizado = java.text.Normalizer.normalize(texto, java.text.Normalizer.Form.NFD)
+        return regex.replace(normalizado, "").trim().lowercase()
     }
 }

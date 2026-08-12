@@ -3,16 +3,16 @@ package com.example.guiametro
 import android.os.Bundle
 import android.view.View
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.ProgressBar
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.guiametro.viewmodel.RutaViewModel
 import androidx.navigation.fragment.findNavController
-import android.widget.ArrayAdapter
-import android.widget.Spinner
 import com.example.guiametro.repository.MetroRepository
+import com.example.guiametro.viewmodel.RutaViewModel
 
 class RutaFragment : Fragment(R.layout.fragment_planificacion) {
 
@@ -33,9 +33,10 @@ class RutaFragment : Fragment(R.layout.fragment_planificacion) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = ViewModelProvider(this)[RutaViewModel::class.java]
+        // ViewModel vinculado a la Activity para que no se pierda en segundo plano
+        viewModel = ViewModelProvider(requireActivity())[RutaViewModel::class.java]
 
-        // Vincular con los IDs del XML proporcionado
+        // Vincular con los IDs del XML
         btnBuscar = view.findViewById(R.id.btnBuscarRuta)
         progress = view.findViewById(R.id.progressBusqueda)
 
@@ -51,7 +52,11 @@ class RutaFragment : Fragment(R.layout.fragment_planificacion) {
             val origenId = obtenerOrigenSeleccionado()
             val destinoId = obtenerDestinoSeleccionado()
 
-            viewModel.buscarRuta(origenId, destinoId)
+            if (origenId != null && destinoId != null) {
+                viewModel.buscarRuta(origenId, destinoId)
+            } else {
+                Toast.makeText(requireContext(), "Por favor selecciona origen y destino válidos", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -60,11 +65,9 @@ class RutaFragment : Fragment(R.layout.fragment_planificacion) {
         val adaptadorLineas = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, listaNombresLineas)
         adaptadorLineas.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
-        // Asignar adaptador de líneas a ambos Spinners de línea
         spLineaOrigen.adapter = adaptadorLineas
         spLineaDestino.adapter = adaptadorLineas
 
-        // Listener para cambiar estaciones de Origen al cambiar de Línea de Origen
         spLineaOrigen.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val lineaSeleccionada = parent.getItemAtPosition(position).toString()
@@ -73,7 +76,6 @@ class RutaFragment : Fragment(R.layout.fragment_planificacion) {
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
-        // Listener para cambiar estaciones de Destino al cambiar de Línea de Destino
         spLineaDestino.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 val lineaSeleccionada = parent.getItemAtPosition(position).toString()
@@ -104,7 +106,6 @@ class RutaFragment : Fragment(R.layout.fragment_planificacion) {
 
         viewModel.ruta.observe(viewLifecycleOwner) { resultadoRuta ->
             if (resultadoRuta != null) {
-                // Pasa el resultado utilizando el Bundle
                 val bundle = Bundle().apply {
                     putSerializable("rutaResultado", resultadoRuta)
                 }
@@ -114,7 +115,6 @@ class RutaFragment : Fragment(R.layout.fragment_planificacion) {
                     bundle
                 )
 
-                // Limpiar la búsqueda para evitar que se dispare de nuevo al volver
                 viewModel.limpiarBusqueda()
             }
         }
@@ -122,7 +122,6 @@ class RutaFragment : Fragment(R.layout.fragment_planificacion) {
 
     private fun obtenerOrigenSeleccionado(): Int? {
         val nombreSeleccionado = spEstacionOrigen.selectedItem?.toString() ?: return null
-
         if (nombreSeleccionado == "Seleccione Estación") return null
 
         val lineaActual = spLineaOrigen.selectedItem?.toString() ?: return null
@@ -133,7 +132,6 @@ class RutaFragment : Fragment(R.layout.fragment_planificacion) {
 
     private fun obtenerDestinoSeleccionado(): Int? {
         val nombreSeleccionado = spEstacionDestino.selectedItem?.toString() ?: return null
-
         if (nombreSeleccionado == "Seleccione Estación") return null
 
         val lineaActual = spLineaDestino.selectedItem?.toString() ?: return null

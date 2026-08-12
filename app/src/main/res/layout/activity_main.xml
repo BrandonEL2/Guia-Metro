@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:background="@color/fondo_pantalla">
 
     <!-- ENCABEZADO: ICONO, TÍTULO Y BOTÓN ALINEADOS A LA MISMA ALTURA -->

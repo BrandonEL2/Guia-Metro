@@ -1,4 +1,5 @@
 package com.example.guiametro
+import java.io.Serializable
 
 data class Estacion(
 
@@ -12,4 +13,4 @@ data class Estacion(
 
     val esTransbordo: Boolean = false
 
-)
+): Serializable
